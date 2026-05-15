@@ -1,0 +1,14 @@
+{
+
+    "getAllActiveUsers": "SELECT * from HOSO WHERE SoCongVan = @socongvan",
+
+    "getUserByEmail": "SELECT username, password FROM users WHERE email = @email",
+
+    "insertUser": "INSERT INTO users (username, password, active) VALUES (@username, @password, @active)",
+
+    "updateUserPassword": "UPDATE users SET password = @password WHERE username = @username",
+
+    "deleteUser": "DELETE FROM users WHERE username = @username"
+
+}
+
