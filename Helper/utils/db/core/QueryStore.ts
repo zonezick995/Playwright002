@@ -8,9 +8,10 @@ export class QueryStore {
 
   static load(dbType: DBType) {
     if (!this.cache.has(dbType)) {
+      // Load queries from JSON file based on dbType
       const filePath = path.resolve(
         __dirname,
-        `../../queries/${dbType}.json`
+        `../../db/${dbType}.json`
       );
 
       if (!fs.existsSync(filePath)) {

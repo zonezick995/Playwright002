@@ -17,16 +17,15 @@ const timestamp = new Date()
   .replace(/(\d{8})(\d{6})/, '$1-$2');
 
 // Load environment variables from .env file based on NODE_ENV (default to 'sit')
-const env = process.env.NODE_ENV || 'sit';
-
-dotenv.config({ path: path.resolve(__dirname, `.env.${env}`) });
+const env = process.env.NODE_ENV || 'sit'; // NODE_ENV có thể là 'sit', 'uat', 'prod', v.v.
+dotenv.config({ path: path.resolve(__dirname, `.env.${env}`) }); // Load .env.sit, .env.uat, etc. based on NODE_ENV
 
 export default defineConfig({
   // Global setup and teardown
-  globalTeardown: require.resolve('./global-teardown'),
+  globalTeardown: require.resolve('./global-teardown'), // optional, nếu có cần dọn dẹp sau khi chạy xong tất cả tests
 
   // Test directory
-  testDir: './tests',
+  testDir: './tests', // thư mục chứa test cases
 
   // Timeouts
   timeout: 60000, // timeout cho mỗi test
@@ -42,16 +41,17 @@ export default defineConfig({
   reporter: [['html', {
     outputFolder: `test-report/${timestamp}` || 'playwright-report',
     open: 'never',
-    title: 'NEW CLMS Test Report',
+    title: 'Test Report',
   }]],
+  // Shared settings for all projects
   use: {
-    baseURL: process.env.BASE_URL || 'http://localhost:3000',
-    trace: 'on-first-retry',
-    headless: process.env.PLAYWRIGHT_HEADLESS !== 'false',
-    screenshot: 'only-on-failure',
+    baseURL: process.env.BASE_URL || 'http://localhost:3000', // base URL cho các lệnh page.goto() và APIHelper
+    trace: 'on-first-retry', // ghi lại trace chỉ khi test thất bại và được retry
+    headless: process.env.PLAYWRIGHT_HEADLESS !== 'false', // mặc định chạy headless, chỉ chạy headed nếu explicitly set PLAYWRIGHT_HEADLESS=false
+    screenshot: 'only-on-failure', // chụp screenshot chỉ khi test thất bại
     actionTimeout: 10000, // timeout mặc định cho các action như goto, click, fill, waitForSelector...
     navigationTimeout: 30000, // timeout cho các thao tác điều hướng
-    viewport: { width: 1920, height: 1080 },
+    viewport: { width: 1920, height: 1080 }, // kích thước màn hình
   },
   projects: [
     { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
