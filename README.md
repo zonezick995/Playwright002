@@ -55,7 +55,6 @@ copy .env.sit .env
 # (hoặc) cp .env.sit .env
 ```
 
-Ví dụ biến cần cấu hình: `DB_CLMS_HOST`, `DB_CLMS_USER`, `DB_CLMS_PASSWORD`, `DB_CLMS_NAME` hoặc `DB_CONFIGS` (JSON cho nhiều DB).
 
 ### 8) Build & chạy test lần đầu
 ```bash
@@ -98,7 +97,7 @@ npm run install-browsers
 
 **Biến môi trường**
 - Copy file môi trường mẫu (ví dụ `.env.sit`) → `.env` và cập nhật.
-- Thông tin DB có thể đặt lần lượt như `DB_CLMS_HOST`, `DB_CLMS_USER`, `DB_CLMS_PASSWORD`, `DB_CLMS_NAME`.
+- Thông tin DB có thể đặt lần lượt như `DB_HOST`, `DB_USER`, `DB_PASSWORD`, `DB_NAME`.
 - Hỗ trợ cấu hình nhiều DB qua biến JSON (ví dụ `DB_CONFIGS`) nếu cần.
 
 **Chạy test**
@@ -124,7 +123,7 @@ npx playwright show-report <report-folder>
 
 **Fixtures & POM (nhanh)**
 - `pom.fixture.ts` kết hợp POM + DB fixtures, inject POM instance vào test: `test('x', async ({ pm }) => { ... })`.
-- POM đặt ở `pages/` theo thư mục chức năng (ví dụ `clmsPage`, `eisgnPage`).
+- POM đặt ở `pages/` theo thư mục chức năng (ví dụ `page1`, `pageUOO`).
 
 **DB & QueryStore**
 - `utils/db/DatabaseFactory.ts` tạo đối tượng DB theo driver (mssql/oracle/pg).
