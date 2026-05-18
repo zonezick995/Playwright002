@@ -9,6 +9,7 @@ import * as HERO from '../pages/heroPages/loginPage';
 * Expose composable functions thay vì class instances
 */
 
+// Type definitions for our custom fixtures
 type CLMSActions = {
   login: (credentials: CLMS.Credentials) => Promise<void>;
   logout: () => Promise<void>;
@@ -18,21 +19,24 @@ type CLMSActions = {
   testAPI: () => Promise<void>;
 };
 
+// Type-safe credentials
 type OrangeHrActions = {
   login: (credentials: OHR.Credentials) => Promise<void>;
 };
 
+// Type-safe credentials
 type herokuappActions = {
   login: (credentials: HERO.Credentials) => Promise<void>;
 };
 
-
+// Extend base test with our custom fixtures
 export const test = base.extend<{
   clms: CLMSActions;
   orangeHr: OrangeHrActions;
   hero: herokuappActions;
 }>({
 
+  // CLMS fixture with composable actions
   clms: async ({ page, clmsDb }, use) => {
     // Inject dependencies vào pure functions
     await use({
@@ -45,12 +49,14 @@ export const test = base.extend<{
     });
   },
 
+  // OrangeHR fixture with composable actions
   orangeHr: async ({ page }, use) => {
     await use({
       login: (creds) => OHR.f_login(page, creds),
     });
   },
   
+  //  Herokuapp fixture with composable actions
   hero: async ({ page }, use) => {
     await use({
       login: (creds) => HERO.f_login(page, creds),

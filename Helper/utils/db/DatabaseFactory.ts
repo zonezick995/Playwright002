@@ -189,18 +189,21 @@ const instances = new Map<DBKey, Database>();
 
 // Main factory function - clean & type-safe
 export const getDatabase = (dbType: DBDriver, key: DBKey): Database => {
+  // Check cache first
   if (instances.has(key)) {
     return instances.get(key)!;
   }
 
+  //  Create new instance
   const factory = dbFactories[dbType];
   if (!factory) {
     throw new Error(`Unsupported database type: ${dbType}`);
   }
 
+  // Create, cache, and return instance
   const db = factory(key);
-  instances.set(key, db);
 
+  instances.set(key, db);
   return db;
 };
  
