@@ -11,7 +11,7 @@ import { QueryStore } from './core/QueryStore';
 
 // Type-safe database types
 export type DBDriver = 'mssql' | 'postgres' | 'oracle';
-export type DBKey = 'CLMS' | 'DNA';
+export type DBKey = 'CLMS' | 'DNAA';
 
 // Database interface với generic support
 export type Database = {
