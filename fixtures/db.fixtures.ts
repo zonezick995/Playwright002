@@ -19,7 +19,7 @@ export const test = base.extend<DBFixtures>({
   },
 
   dnaDb: async ({}, use) => {
-    const db = getDatabase('oracle', 'DNA');
+    const db = getDatabase('oracle', 'DNAA');
     await use(db);
   },
 });
