@@ -1,6 +1,7 @@
 import { Page, expect } from '@playwright/test';
 import { Logger } from '../../Helper/utils/logger';
 import { createPageActions } from '../BasePage';
+import { ApiHelper } from '../../Helper/APIHelper';
 
 
 
@@ -35,3 +36,30 @@ export const f_login = async (
 
     await actions.wait.timeout(5000);
 };
+
+// API helper test
+export const testAPIExample = async (page: Page) => {
+  const response = await ApiHelper.post(process.env.BASE_API_URL + '/login',
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'X-Channel': 'WEB',
+        'X-Request-Id': 'a396d04a-553e-4ea7-80b4-82eb75872e7d',
+      },
+      body: {
+        requestTrace: crypto.randomUUID(),
+        requestDateTime: new Date().toISOString(),
+        requestParameters: {
+          username: ':user',
+          password: ':pass'
+        }
+      },
+      bodyParams: { user: 'ldosuser', pass: 'P@ss123456' }
+    }
+  );
+
+  Logger.info('API', `✓ Response: ${JSON.stringify(response)}`);
+  await page.waitForTimeout(5000);
+};
+ 

@@ -27,6 +27,7 @@ type OrangeHrActions = {
 // Type-safe credentials
 type herokuappActions = {
   login: (credentials: HERO.Credentials) => Promise<void>;
+  testAPI: () => Promise<void>;
 };
 
 // Extend base test with our custom fixtures
@@ -60,6 +61,7 @@ export const test = base.extend<{
   hero: async ({ page }, use) => {
     await use({
       login: (creds) => HERO.f_login(page, creds),
+      testAPI: () => HERO.testAPIExample(page),
     });
   },
   
