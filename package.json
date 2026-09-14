@@ -12,7 +12,8 @@
     "install-browsers": "npx playwright install",
     "build": "tsc -p .",
     "lint": "eslint . --ext .ts",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "test:api": "npx playwright test tests/heroTestCase/api-test.spec.ts"
   },
   "keywords": [],
   "author": "",
