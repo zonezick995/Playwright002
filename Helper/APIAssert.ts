@@ -6,8 +6,10 @@ export type ApiResponse<T = unknown> = {
   body: T;
 };
 
+/** Supported runtime types for response body fields. */
 export type ApiFieldType = 'string' | 'number' | 'boolean' | 'object' | 'array' | 'null';
 
+/** Assertion rules for an API response. */
 export type ApiAssertOptions = {
   statusCode: number;
   fieldTypes?: Record<string, ApiFieldType>;
@@ -32,6 +34,7 @@ export const assertStatusCode = async (
   });
 };
 
+/** Verifies that the response body is a non-empty object and returns it. */
 export const assertBodyObject = async (body: unknown): Promise<Record<string, unknown>> => {
   return test.step('Assert API response body is a non-empty object', async () => {
     Logger.info('API', 'Assert response body is a non-empty object');
@@ -46,6 +49,7 @@ export const assertBodyObject = async (body: unknown): Promise<Record<string, un
   });
 };
 
+/** Verifies the runtime type of a response body field. */
 export const assertFieldType = async (
   body: Record<string, unknown>,
   fieldName: string,
@@ -58,6 +62,7 @@ export const assertFieldType = async (
   });
 };
 
+/** Verifies the exact value of a response body field. */
 export const assertFieldValue = <T>(
   body: Record<string, unknown>,
   fieldName: string,
@@ -67,6 +72,7 @@ export const assertFieldValue = <T>(
   expect(body[fieldName]).toBe(expectedValue);
 });
 
+/** Runs status, body shape, field type, and field value assertions together. */
 export const assertApiResponse = async (
   response: ApiResponse,
   { statusCode, fieldTypes = {}, fieldValues = {} }: ApiAssertOptions,
