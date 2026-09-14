@@ -44,8 +44,13 @@ export const f_login = async (
 
 // API helper test
 export const testAPIExample = async (page: Page) => {
-  
-  const response = await ApiHelper.post("https://rahulshettyacademy.com/maps/api/place/add/json",
+  const baseApiUrl = process.env.BASE_API_URL_DEMO_ADD_PLACE;
+
+  if (!baseApiUrl) {
+    throw new Error('BASE_API_URL_DEMO is not set');
+  }
+
+  const response = await ApiHelper.post(baseApiUrl,
     {
       headers: {
         'Content-Type': 'application/json',
