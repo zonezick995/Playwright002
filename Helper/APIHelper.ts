@@ -11,6 +11,7 @@ type RequestOptions = {
   retries?: number;
   retryDelayMs?: number;
   parseJson?: boolean;
+  returnResponse?: boolean;
   body?: any;
 };
 
@@ -32,6 +33,7 @@ export class ApiHelper {
       retries = 0,
       retryDelayMs = 500,
       parseJson = true,
+      returnResponse = false,
       body,
     } = options ?? {};
 
@@ -53,6 +55,7 @@ export class ApiHelper {
         const timeout = setTimeout(() => controller?.abort(), timeoutMs);
 
         const reqHeaders: Record<string, string> = { ...headers };
+        
         // apply body params if provided (supports object or string templates)
         let bodyPayload: any = undefined;
         const applyBodyParams = (input: any, params?: Record<string, any>) => {
@@ -116,16 +119,18 @@ export class ApiHelper {
           throw err;
         }
 
+        let responseBody: any = text;
         if (parseJson && contentType.includes('application/json')) {
           try {
-            return JSON.parse(text);
+            responseBody = JSON.parse(text);
           } catch (err) {
             Logger.warn('API', `[API] Failed to parse JSON response from ${finalUrl}`);
-            return text;
           }
         }
 
-        return text;
+        return returnResponse
+          ? { statusCode: resp.status, body: responseBody }
+          : responseBody;
       } catch (err) {
         lastError = err;
         Logger.warn('API', `[${method}] Request attempt ${attempt} failed: ${String(err)}`);

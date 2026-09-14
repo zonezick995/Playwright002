@@ -2,8 +2,13 @@ import { Page, expect } from '@playwright/test';
 import { Logger } from '../../Helper/utils/logger';
 import { createPageActions } from '../BasePage';
 import { ApiHelper } from '../../Helper/APIHelper';
-
-
+import {
+  assertStatusCode,
+  assertBodyObject,
+  assertFieldType,
+  assertFieldValue,
+  assertApiResponse,
+} from '../../Helper/APIAssert';
 
 
 // Type-safe credentials
@@ -39,7 +44,8 @@ export const f_login = async (
 
 // API helper test
 export const testAPIExample = async (page: Page) => {
-  const response = await ApiHelper.post(process.env.BASE_API_URL + '/login',
+  
+  const response = await ApiHelper.post("https://rahulshettyacademy.com/maps/api/place/add/json",
     {
       headers: {
         'Content-Type': 'application/json',
@@ -48,18 +54,51 @@ export const testAPIExample = async (page: Page) => {
         'X-Request-Id': 'a396d04a-553e-4ea7-80b4-82eb75872e7d',
       },
       body: {
-        requestTrace: crypto.randomUUID(),
-        requestDateTime: new Date().toISOString(),
-        requestParameters: {
-          username: ':user',
-          password: ':pass'
-        }
+        location: {
+          lat: -38.383494,
+          lng: 33.427362,
+        },
+        accuracy: 50,
+        name: 'Frontline house',
+        phone_number: '(+91) 983 893 3937',
+        address: '29, side layout, cohen 09',
+        types: ['shoe park', 'shop'],
+        website: 'http://google.com',
+        language: 'French-IN',
       },
-      bodyParams: { user: 'ldosuser', pass: 'P@ss123456' }
+      returnResponse: true,
     }
   );
 
+  await assertStatusCode(response, 200);
+
+  const body = await assertBodyObject(response.body);
+
+  await assertFieldType(body, 'status', 'string');
+  await assertFieldType(body, 'place_id', 'string');
+  await assertFieldType(body, 'scope', 'string');
+  await assertFieldType(body, 'reference', 'string');
+  await assertFieldType(body, 'id', 'string');
+
+  await assertFieldValue(body, 'status', 'OK');
+
+  await assertApiResponse(response, {
+    statusCode: 200,
+    fieldTypes: {
+      status: 'string',
+      place_id: 'string',
+      scope: 'string',
+      reference: 'string',
+      id: 'string',
+    },
+    fieldValues: {
+      status: 'OK',
+    },
+  });
+
+ 
   Logger.info('API', `✓ Response: ${JSON.stringify(response)}`);
+
   await page.waitForTimeout(5000);
 };
  
