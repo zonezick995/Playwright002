@@ -23,14 +23,34 @@ const getFieldType = (value: unknown): ApiFieldType => {
   return typeof value as ApiFieldType;
 };
 
+const formatValue = (value: unknown): string => {
+  try {
+    return JSON.stringify(value);
+  } catch {
+    return String(value);
+  }
+};
+
+const logAssertionFailure = (message: string, error: unknown) => {
+  Logger.error('API', `Assertion failed: ${message}`, error);
+};
+
 export const assertStatusCode = async (
   response: ApiResponse,
   expectedStatusCode: number,
 ) => {
   await test.step(`Assert API status code is ${expectedStatusCode}`, async () => {
     Logger.info('API', `Assert status code: expected [${expectedStatusCode}] , received [${response.statusCode}]`);
-    expect(typeof response.statusCode).toBe('number');
-    expect(response.statusCode).toBe(expectedStatusCode);
+    try {
+      expect(typeof response.statusCode).toBe('number');
+      expect(response.statusCode).toBe(expectedStatusCode);
+    } catch (error) {
+      logAssertionFailure(
+        `status code expected ${expectedStatusCode}, received ${formatValue(response.statusCode)}`,
+        error,
+      );
+      throw error;
+    }
   });
 };
 
@@ -38,14 +58,19 @@ export const assertStatusCode = async (
 export const assertBodyObject = async (body: unknown): Promise<Record<string, unknown>> => {
   return test.step('Assert API response body is a non-empty object', async () => {
     Logger.info('API', 'Assert response body is a non-empty object');
-    expect(body).not.toBeNull();
-    expect(Array.isArray(body)).toBe(false);
-    expect(typeof body).toBe('object');
+    try {
+      expect(body).not.toBeNull();
+      expect(Array.isArray(body)).toBe(false);
+      expect(typeof body).toBe('object');
 
-    const bodyObject = body as Record<string, unknown>;
-    expect(Object.keys(bodyObject)).not.toHaveLength(0);
+      const bodyObject = body as Record<string, unknown>;
+      expect(Object.keys(bodyObject)).not.toHaveLength(0);
 
-    return bodyObject;
+      return bodyObject;
+    } catch (error) {
+      logAssertionFailure(`response body is not a non-empty object: ${formatValue(body)}`, error);
+      throw error;
+    }
   });
 };
 
@@ -58,7 +83,15 @@ export const assertFieldType = async (
   await test.step(`Assert field ${fieldName} has type ${expectedType}`, async () => {
     const actualType = getFieldType(body[fieldName]);
     Logger.info('API', `Assert field type: ${fieldName} expected ${expectedType}, received ${actualType}`);
-    expect(actualType).toBe(expectedType);
+    try {
+      expect(actualType).toBe(expectedType);
+    } catch (error) {
+      logAssertionFailure(
+        `field ${fieldName} type expected ${expectedType}, received ${actualType}; value: ${formatValue(body[fieldName])}`,
+        error,
+      );
+      throw error;
+    }
   });
 };
 
@@ -68,8 +101,16 @@ export const assertFieldValue = <T>(
   fieldName: string,
   expectedValue: T,
 ) => test.step(`Assert field ${fieldName} has expected value`, async () => {
-  Logger.info('API', `Assert field value: ${fieldName}`);
-  expect(body[fieldName]).toBe(expectedValue);
+  Logger.info('API', `Assert field value: ${fieldName}, expected ${formatValue(expectedValue)}`);
+  try {
+    expect(body[fieldName]).toBe(expectedValue);
+  } catch (error) {
+    logAssertionFailure(
+      `field ${fieldName} value expected ${formatValue(expectedValue)}, received ${formatValue(body[fieldName])}`,
+      error,
+    );
+    throw error;
+  }
 });
 
 /** Runs status, body shape, field type, and field value assertions together. */
