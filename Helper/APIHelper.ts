@@ -1,3 +1,4 @@
+import { APIRequestContext, request } from '@playwright/test';
 import { Logger } from './utils/logger';
 
 type RequestOptions = {
@@ -38,106 +39,103 @@ export class ApiHelper {
     } = options ?? {};
 
     const finalUrl = buildUrl(url, params);
-
     let attempt = 0;
     let lastError: unknown;
+    const apiContext = await request.newContext({
+      timeout: timeoutMs,
+      extraHTTPHeaders: headers,
+    });
 
-    while (attempt <= retries) {
-      attempt++;
-      let controller: AbortController | undefined;
-      try {
-        if (typeof fetch === 'undefined') {
-          throw new Error('Global fetch is not available. Run on Node 18+ or polyfill fetch (node-fetch).');
-        }
+    try {
+      while (attempt <= retries) {
+        attempt++;
 
-        controller = new AbortController();
-        const signal = controller.signal;
-        const timeout = setTimeout(() => controller?.abort(), timeoutMs);
+        try {
+          const reqHeaders: Record<string, string> = { ...headers };
 
-        const reqHeaders: Record<string, string> = { ...headers };
-        
-        // apply body params if provided (supports object or string templates)
-        let bodyPayload: any = undefined;
-        const applyBodyParams = (input: any, params?: Record<string, any>) => {
-          if (!params) return input;
-          try {
-            if (typeof input === 'string') {
-              let s = input;
-              for (const [k, v] of Object.entries(params)) {
+          const applyBodyParams = (input: any, bodyParamMap?: Record<string, any>) => {
+            if (!bodyParamMap) return input;
+            try {
+              if (typeof input === 'string') {
+                let s = input;
+                for (const [k, v] of Object.entries(bodyParamMap)) {
+                  const re1 = new RegExp(`\\{\\{${k}\\}\\}`, 'g');
+                  const re2 = new RegExp(`:${k}`, 'g');
+                  s = s.replace(re1, String(v)).replace(re2, String(v));
+                }
+                return s;
+              }
+
+              const json = JSON.stringify(input);
+              let replaced = json;
+              for (const [k, v] of Object.entries(bodyParamMap)) {
                 const re1 = new RegExp(`\\{\\{${k}\\}\\}`, 'g');
                 const re2 = new RegExp(`:${k}`, 'g');
-                s = s.replace(re1, String(v)).replace(re2, String(v));
+                replaced = replaced.replace(re1, String(v)).replace(re2, String(v));
               }
-              return s;
+              return JSON.parse(replaced);
+            } catch (e) {
+              Logger.warn('API', `[ApiHelper] Failed to apply bodyParams: ${String(e)}`);
+              return input;
             }
+          };
 
-            // object: stringify and replace then parse back
-            const json = JSON.stringify(input);
-            let replaced = json;
-            for (const [k, v] of Object.entries(params)) {
-              const re1 = new RegExp(`\\{\\{${k}\\}\\}`, 'g');
-              const re2 = new RegExp(`:${k}`, 'g');
-              replaced = replaced.replace(re1, String(v)).replace(re2, String(v));
+          const finalBody = applyBodyParams(body, options?.bodyParams);
+          let requestBody: any = undefined;
+          if (finalBody !== undefined && finalBody !== null) {
+            requestBody = finalBody;
+            if (typeof finalBody !== 'string' && !(finalBody instanceof Uint8Array) && !(finalBody instanceof ArrayBuffer)) {
+              reqHeaders['Content-Type'] = reqHeaders['Content-Type'] ?? 'application/json';
             }
-            return JSON.parse(replaced);
-          } catch (e) {
-            Logger.warn('API', `[ApiHelper] Failed to apply bodyParams: ${String(e)}`);
-            return input;
           }
-        };
 
-        const finalBody = applyBodyParams(body, options?.bodyParams);
-        if (finalBody !== undefined && finalBody !== null) {
-          if (typeof finalBody === 'string' || finalBody instanceof Uint8Array || finalBody instanceof ArrayBuffer) {
-            bodyPayload = finalBody as any;
-          } else {
-            // assume JSON
-            bodyPayload = JSON.stringify(finalBody);
-            reqHeaders['Content-Type'] = reqHeaders['Content-Type'] ?? 'application/json';
+          Logger.info('API', `[${method}] ${finalUrl} (attempt ${attempt})`);
+          if (params) Logger.debug('API', `Params: ${JSON.stringify(params)}`);
+          if (finalBody) Logger.debug('API', `Body: ${typeof finalBody === 'string' ? finalBody : JSON.stringify(finalBody)}`);
+
+          const response = await (apiContext as APIRequestContext)[method.toLowerCase() as 'get' | 'post' | 'put' | 'delete'](
+            finalUrl,
+            {
+              headers: reqHeaders,
+              params,
+              data: requestBody,
+              timeout: timeoutMs,
+            } as any,
+          );
+
+          const contentType = response.headers()['content-type'] ?? '';
+          const text = await response.text();
+
+          if (!response.ok()) {
+            const err = new Error(`[API] ${method} ${finalUrl} returned ${response.status()} ${response.statusText()} - ${text}`);
+            Logger.error('API', err.message);
+            throw err;
           }
-        }
 
-        Logger.info('API', `[${method}] ${finalUrl} (attempt ${attempt})`);
-        if (params) Logger.debug('API', `Params: ${JSON.stringify(params)}`);
-        if (body) Logger.debug('API', `Body: ${typeof body === 'string' ? body : JSON.stringify(body)}`);
-
-        const resp = await fetch(finalUrl, {
-          method,
-          headers: reqHeaders,
-          body: bodyPayload,
-          signal,
-        } as any);
-
-        clearTimeout(timeout);
-
-        const contentType = resp.headers.get('content-type') ?? '';
-        const text = await resp.text();
-
-        if (!resp.ok) {
-          const err = new Error(`[API] ${method} ${finalUrl} returned ${resp.status} ${resp.statusText} - ${text}`);
-          Logger.error('API', err.message);
-          throw err;
-        }
-
-        let responseBody: any = text;
-        if (parseJson && contentType.includes('application/json')) {
-          try {
-            responseBody = JSON.parse(text);
-          } catch (err) {
-            Logger.warn('API', `[API] Failed to parse JSON response from ${finalUrl}`);
+          let responseBody: any = text;
+          if (parseJson && contentType.includes('application/json')) {
+            try {
+              responseBody = JSON.parse(text);
+            } catch (err) {
+              Logger.warn('API', `[API] Failed to parse JSON response from ${finalUrl}`);
+            }
           }
-        }
 
-        return returnResponse
-          ? { statusCode: resp.status, body: responseBody }
-          : responseBody;
-      } catch (err) {
-        lastError = err;
-        Logger.warn('API', `[${method}] Request attempt ${attempt} failed: ${String(err)}`);
-        if (attempt > retries) break;
-        await new Promise((r) => setTimeout(r, retryDelayMs));
-        continue;
+          if (returnResponse) {
+            return { statusCode: response.status(), body: responseBody };
+          }
+
+          return responseBody;
+        } catch (err) {
+          lastError = err;
+          Logger.warn('API', `[${method}] Request attempt ${attempt} failed: ${String(err)}`);
+          if (attempt > retries) break;
+          await new Promise((r) => setTimeout(r, retryDelayMs));
+          continue;
+        }
       }
+    } finally {
+      await apiContext.dispose();
     }
 
     throw lastError;

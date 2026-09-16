@@ -54,6 +54,22 @@ export const assertStatusCode = async (
   });
 };
 
+/** Verifies that the response body is a non-empty array and returns it. */
+export const assertBodyArray = async <T = unknown>(body: unknown): Promise<T[]> => {
+  return test.step('Assert API response body is a non-empty array', async () => {
+    Logger.info('API', 'Assert response body is a non-empty array');
+    try {
+      expect(body).not.toBeNull();
+      expect(Array.isArray(body)).toBe(true);
+      expect((body as unknown[]).length).toBeGreaterThan(0);
+      return body as T[];
+    } catch (error) {
+      logAssertionFailure(`response body is not a non-empty array: ${formatValue(body)}`, error);
+      throw error;
+    }
+  });
+};
+
 /** Verifies that the response body is a non-empty object and returns it. */
 export const assertBodyObject = async (body: unknown): Promise<Record<string, unknown>> => {
   return test.step('Assert API response body is a non-empty object', async () => {
@@ -121,7 +137,23 @@ export const assertApiResponse = async (
   await test.step('Assert API response', async () => {
     await assertStatusCode(response, statusCode);
   });
-  const body = await assertBodyObject(response.body);
+
+  const body = Array.isArray(response.body)
+    ? await assertBodyArray(response.body)
+    : await assertBodyObject(response.body);
+
+  if (Array.isArray(body)) {
+    for (const item of body) {
+      const objectItem = item as Record<string, unknown>;
+      for (const [fieldName, expectedType] of Object.entries(fieldTypes)) {
+        await assertFieldType(objectItem, fieldName, expectedType);
+      }
+      for (const [fieldName, expectedValue] of Object.entries(fieldValues)) {
+        await assertFieldValue(objectItem, fieldName, expectedValue);
+      }
+    }
+    return body;
+  }
 
   for (const [fieldName, expectedType] of Object.entries(fieldTypes)) {
     await assertFieldType(body, fieldName, expectedType);
