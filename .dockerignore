@@ -1,0 +1,9 @@
+node_modules
+dist
+allure-report
+allure-results
+test-report
+test-results
+playwright-report
+.git
+npm-debug.log*

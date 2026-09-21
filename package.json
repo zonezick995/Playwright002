@@ -13,7 +13,7 @@
     "build": "tsc -p .",
     "lint": "eslint . --ext .ts",
     "format": "prettier --write .",
-    "test:api": "npx playwright test tests/heroTestCase/api-test.spec.ts",
+    "test:api":"npx playwright test tests/heroTestCase/api-test.spec.ts",
     "allure:generate": "allure generate allure-results --clean -o allure-report",
     "allure:open": "allure open allure-report",
     "report:allure": "npm run allure:generate && npm run allure:open"
