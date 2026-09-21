@@ -142,4 +142,23 @@ npx playwright show-report <report-folder>
 
 **CI / Báo cáo**
 - CI cơ bản: `npm ci` → `npm run install-browsers` → `npm run test` → thu thập `playwright-report`, screenshots, traces.
-- Có thể thêm reporter JUnit/Allure trong `playwright.config.ts` để tích hợp CI.
+- Playwright đồng thời sinh Allure raw results trong `allure-results`.
+
+### Allure report
+
+Chạy test như bình thường, hoặc chạy riêng API test:
+```bash
+npm run test
+# hoặc
+npm run test:api
+```
+
+Sinh report HTML và mở report trong trình duyệt:
+```bash
+npm run report:allure
+```
+
+Nếu chỉ cần sinh report mà không mở trình duyệt:
+```bash
+npm run allure:generate
+```

@@ -38,11 +38,16 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
-  reporter: [['html', {
-    outputFolder: `test-report/${timestamp}` || 'playwright-report',
-    open: 'never',
-    title: 'Test Report',
-  }]],
+  reporter: [
+    ['html', {
+      outputFolder: `test-report/${timestamp}`,
+      open: 'never',
+      title: 'Test Report',
+    }],
+    ['allure-playwright', {
+      resultsDir: 'allure-results',
+    }],
+  ],
   // Shared settings for all projects
   use: {
     baseURL: process.env.BASE_URL || 'http://localhost:3000', // base URL cho các lệnh page.goto() và APIHelper

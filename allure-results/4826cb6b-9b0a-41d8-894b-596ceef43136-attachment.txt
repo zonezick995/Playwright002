@@ -1,0 +1,18 @@
+2026-09-17T09:23:24.203Z  | API   | INFO | [POST] https://rahulshettyacademy.com/maps/api/place/add/json (attempt 1)
+2026-09-17T09:23:24.863Z  | API   | INFO | Assert status code: expected [200] , received [200]
+2026-09-17T09:23:24.872Z  | API   | INFO | Assert response body is a non-empty object
+2026-09-17T09:23:24.875Z  | API   | INFO | Assert field type: status expected string, received string
+2026-09-17T09:23:24.877Z  | API   | INFO | Assert field type: place_id expected string, received string
+2026-09-17T09:23:24.878Z  | API   | INFO | Assert field type: scope expected string, received string
+2026-09-17T09:23:24.880Z  | API   | INFO | Assert field type: reference expected string, received string
+2026-09-17T09:23:24.882Z  | API   | INFO | Assert field type: id expected string, received string
+2026-09-17T09:23:24.884Z  | API   | INFO | Assert field value: status, expected "OK"
+2026-09-17T09:23:24.887Z  | API   | INFO | Assert status code: expected [200] , received [200]
+2026-09-17T09:23:24.890Z  | API   | INFO | Assert response body is a non-empty object
+2026-09-17T09:23:24.894Z  | API   | INFO | Assert field type: status expected string, received string
+2026-09-17T09:23:24.896Z  | API   | INFO | Assert field type: place_id expected string, received string
+2026-09-17T09:23:24.899Z  | API   | INFO | Assert field type: scope expected string, received string
+2026-09-17T09:23:24.901Z  | API   | INFO | Assert field type: reference expected string, received string
+2026-09-17T09:23:24.903Z  | API   | INFO | Assert field type: id expected string, received string
+2026-09-17T09:23:24.904Z  | API   | INFO | Assert field value: status, expected "OK"
+2026-09-17T09:23:24.905Z  | API   | INFO | ✓ Response: {"statusCode":200,"body":{"status":"OK","place_id":"b2adfea92b97fc3a753404529dab90b9","scope":"APP","reference":"d4380c2126bd6459186902ff7434317fd4380c2126bd6459186902ff7434317f","id":"d4380c2126bd6459186902ff7434317f"}}
