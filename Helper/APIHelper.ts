@@ -1,5 +1,6 @@
 import { APIRequestContext, request } from '@playwright/test';
 import { Logger } from './utils/logger';
+import { AllureHelper } from './AllureHelper';
 
 type RequestOptions = {
   headers?: Record<string, string>;
@@ -93,6 +94,14 @@ export class ApiHelper {
           if (params) Logger.debug('API', `Params: ${JSON.stringify(params)}`);
           if (finalBody) Logger.debug('API', `Body: ${typeof finalBody === 'string' ? finalBody : JSON.stringify(finalBody)}`);
 
+          await AllureHelper.attachApiRequest({
+            method,
+            url: finalUrl,
+            headers: reqHeaders,
+            params,
+            body: requestBody,
+          });
+
           const response = await (apiContext as APIRequestContext)[method.toLowerCase() as 'get' | 'post' | 'put' | 'delete'](
             finalUrl,
             {
@@ -106,12 +115,6 @@ export class ApiHelper {
           const contentType = response.headers()['content-type'] ?? '';
           const text = await response.text();
 
-          if (!response.ok()) {
-            const err = new Error(`[API] ${method} ${finalUrl} returned ${response.status()} ${response.statusText()} - ${text}`);
-            Logger.error('API', err.message);
-            throw err;
-          }
-
           let responseBody: any = text;
           if (parseJson && contentType.includes('application/json')) {
             try {
@@ -119,6 +122,19 @@ export class ApiHelper {
             } catch (err) {
               Logger.warn('API', `[API] Failed to parse JSON response from ${finalUrl}`);
             }
+          }
+
+          await AllureHelper.attachApiResponse({
+            status: response.status(),
+            statusText: response.statusText(),
+            headers: response.headers(),
+            body: responseBody,
+          });
+
+          if (!response.ok()) {
+            const err = new Error(`[API] ${method} ${finalUrl} returned ${response.status()} ${response.statusText()} - ${text}`);
+            Logger.error('API', err.message);
+            throw err;
           }
 
           if (returnResponse) {
