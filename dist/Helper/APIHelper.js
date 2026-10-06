@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ApiHelper = void 0;
 const test_1 = require("@playwright/test");
 const logger_1 = require("./utils/logger");
+const AllureHelper_1 = require("./AllureHelper");
 function buildUrl(url, params) {
     if (!params || Object.keys(params).length === 0)
         return url;
@@ -68,6 +69,13 @@ class ApiHelper {
                         logger_1.Logger.debug('API', `Params: ${JSON.stringify(params)}`);
                     if (finalBody)
                         logger_1.Logger.debug('API', `Body: ${typeof finalBody === 'string' ? finalBody : JSON.stringify(finalBody)}`);
+                    await AllureHelper_1.AllureHelper.attachApiRequest({
+                        method,
+                        url: finalUrl,
+                        headers: reqHeaders,
+                        params,
+                        body: requestBody,
+                    });
                     const response = await apiContext[method.toLowerCase()](finalUrl, {
                         headers: reqHeaders,
                         params,
@@ -76,11 +84,6 @@ class ApiHelper {
                     });
                     const contentType = response.headers()['content-type'] ?? '';
                     const text = await response.text();
-                    if (!response.ok()) {
-                        const err = new Error(`[API] ${method} ${finalUrl} returned ${response.status()} ${response.statusText()} - ${text}`);
-                        logger_1.Logger.error('API', err.message);
-                        throw err;
-                    }
                     let responseBody = text;
                     if (parseJson && contentType.includes('application/json')) {
                         try {
@@ -89,6 +92,17 @@ class ApiHelper {
                         catch (err) {
                             logger_1.Logger.warn('API', `[API] Failed to parse JSON response from ${finalUrl}`);
                         }
+                    }
+                    await AllureHelper_1.AllureHelper.attachApiResponse({
+                        status: response.status(),
+                        statusText: response.statusText(),
+                        headers: response.headers(),
+                        body: responseBody,
+                    });
+                    if (!response.ok()) {
+                        const err = new Error(`[API] ${method} ${finalUrl} returned ${response.status()} ${response.statusText()} - ${text}`);
+                        logger_1.Logger.error('API', err.message);
+                        throw err;
                     }
                     if (returnResponse) {
                         return { statusCode: response.status(), body: responseBody };

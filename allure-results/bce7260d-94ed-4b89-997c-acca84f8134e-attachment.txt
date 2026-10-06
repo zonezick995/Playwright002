@@ -1,0 +1,10 @@
+[Allure PostgreSQL] Imported: {
+  database: 'postgres',
+  current_user: 'postgres',
+  run_count: '1',
+  test_count: '20',
+  step_count: '175',
+  runId: 1,
+  testCount: 20,
+  parsedStepCount: 89
+}

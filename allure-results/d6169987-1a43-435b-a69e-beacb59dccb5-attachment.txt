@@ -1,0 +1,6 @@
+[Allure PostgreSQL Report] Generated: {
+  runId: 4,
+  testCount: 23,
+  reportDir: 'C:\\Users\\bpdai\\Playwright002\\allure-db-reports\\allure-report-4',
+  filePath: 'C:\\Users\\bpdai\\Playwright002\\allure-db-reports\\allure-report-4\\index.html'
+}

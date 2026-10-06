@@ -1,0 +1,1 @@
+[{"name":"Product defects","description":"Failures caused by product behavior.","matchedStatuses":["failed"]},{"name":"Test defects","description":"Failures caused by test execution or test code.","matchedStatuses":["broken"]}]

@@ -107,3 +107,5 @@ export class AllureHelper {
     await allure.attachment(name, screenshot, 'image/png');
   }
 }
+
+export * from './Allure';

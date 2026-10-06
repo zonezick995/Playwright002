@@ -7,6 +7,9 @@ const test_1 = require("@playwright/test");
 const logger_1 = require("./Helper/utils/logger");
 const dotenv_1 = __importDefault(require("dotenv"));
 const path_1 = __importDefault(require("path"));
+// Load environment variables before configuring log level.
+const env = process.env.NODE_ENV || 'sit';
+dotenv_1.default.config({ path: path_1.default.resolve(__dirname, `.env.${env}`) });
 logger_1.Logger.configure({
     enabled: true,
     minLevel: process.env.LOG_LEVEL === 'DEBUG' ? logger_1.LogLevel.DEBUG : logger_1.LogLevel.INFO,
@@ -17,9 +20,14 @@ const timestamp = new Date()
     .replace(/[-: ]/g, '')
     .slice(0, 15)
     .replace(/(\d{8})(\d{6})/, '$1-$2');
-// Load environment variables from .env file based on NODE_ENV (default to 'sit')
-const env = process.env.NODE_ENV || 'sit'; // NODE_ENV có thể là 'sit', 'uat', 'prod', v.v.
-dotenv_1.default.config({ path: path_1.default.resolve(__dirname, `.env.${env}`) }); // Load .env.sit, .env.uat, etc. based on NODE_ENV
+const buildOrder = Number(process.env.GITHUB_RUN_NUMBER ?? process.env.BUILD_NUMBER);
+const ciRepository = process.env.GITHUB_REPOSITORY;
+const ciServerUrl = process.env.GITHUB_SERVER_URL;
+const ciRunId = process.env.GITHUB_RUN_ID;
+const ciRunAttempt = process.env.GITHUB_RUN_ATTEMPT;
+const buildUrl = ciRepository && ciServerUrl && ciRunId
+    ? `${ciServerUrl}/${ciRepository}/actions/runs/${ciRunId}`
+    : process.env.BUILD_URL;
 exports.default = (0, test_1.defineConfig)({
     // Global setup and teardown
     globalTeardown: require.resolve('./global-teardown'), // optional, nếu có cần dọn dẹp sau khi chạy xong tất cả tests
@@ -42,7 +50,44 @@ exports.default = (0, test_1.defineConfig)({
             }],
         ['allure-playwright', {
                 resultsDir: 'allure-results',
+                environmentInfo: {
+                    Environment: env,
+                    'Node.js': process.version,
+                    Platform: process.platform,
+                    ...(process.env.ALLURE_CHANNEL
+                        ? { Channel: process.env.ALLURE_CHANNEL }
+                        : {}),
+                    ...(process.env.CI ? { CI: process.env.CI } : {}),
+                },
+                categories: [
+                    {
+                        name: 'Product defects',
+                        description: 'Failures caused by product behavior.',
+                        matchedStatuses: ['failed'],
+                    },
+                    {
+                        name: 'Test defects',
+                        description: 'Failures caused by test execution or test code.',
+                        matchedStatuses: ['broken'],
+                    },
+                ],
             }],
+        [require.resolve('./Helper/Allure/postgres/allure-postgres-reporter'), {
+                resultsDir: 'allure-results',
+                executor: {
+                    name: process.env.CI ? 'CI' : 'Local',
+                    type: process.env.GITHUB_ACTIONS ? 'github' : process.env.CI ? 'ci' : 'local',
+                    ...(Number.isSafeInteger(buildOrder) && buildOrder > 0
+                        ? { buildOrder }
+                        : {}),
+                    buildName: process.env.GITHUB_WORKFLOW ??
+                        process.env.BUILD_NAME ??
+                        'Playwright test run',
+                    ...(buildUrl ? { buildUrl } : {}),
+                    ...(ciRunAttempt ? { reportName: `Attempt ${ciRunAttempt}` } : {}),
+                },
+            }],
+        [require.resolve('./Helper/Allure/postgres/test-output-reporter')],
     ],
     // Shared settings for all projects
     use: {

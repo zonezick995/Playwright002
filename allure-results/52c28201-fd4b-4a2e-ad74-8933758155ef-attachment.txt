@@ -1,0 +1,6 @@
+[PostgreSQL] Connected: {
+  database: 'postgres',
+  user: 'postgres',
+  server_port: 5432,
+  server_version: 'PostgreSQL 16.14, compiled by Visual C++ build 1944, 64-bit'
+}

@@ -1,0 +1,24 @@
+{
+  "status": 200,
+  "statusText": "OK",
+  "headers": {
+    "date": "Tue, 06 Oct 2026 07:45:19 GMT",
+    "server": "Apache/2.4.52 (Ubuntu)",
+    "strict-transport-security": "max-age=604800; includeSubDomains",
+    "access-control-allow-origin": "*",
+    "access-control-allow-methods": "POST",
+    "access-control-max-age": "3600",
+    "access-control-allow-headers": "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With",
+    "content-length": "194",
+    "keep-alive": "timeout=5, max=100",
+    "connection": "Keep-Alive",
+    "content-type": "application/json;charset=UTF-8"
+  },
+  "body": {
+    "status": "OK",
+    "place_id": "4baab1b79f897be4ad63f866c095e107",
+    "scope": "APP",
+    "reference": "0f65d9f7c965dac79973adb0abf8c3480f65d9f7c965dac79973adb0abf8c348",
+    "id": "0f65d9f7c965dac79973adb0abf8c348"
+  }
+}
