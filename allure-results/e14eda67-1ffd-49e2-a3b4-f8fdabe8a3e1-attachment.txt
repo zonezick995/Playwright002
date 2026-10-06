@@ -1,0 +1,20 @@
+2026-10-06T09:19:40.157Z  | TEST  | INFO | Starting API test: create a place
+2026-10-06T09:19:40.168Z  | API   | INFO | [POST] https://rahulshettyacademy.com/maps/api/place/add/json (attempt 1)
+2026-10-06T09:19:40.833Z  | API   | INFO | Assert status code: expected [200] , received [200]
+2026-10-06T09:19:40.839Z  | API   | INFO | Assert response body is a non-empty object
+2026-10-06T09:19:40.843Z  | API   | INFO | Assert field type: status expected string, received string
+2026-10-06T09:19:40.844Z  | API   | INFO | Assert field type: place_id expected string, received string
+2026-10-06T09:19:40.845Z  | API   | INFO | Assert field type: scope expected string, received string
+2026-10-06T09:19:40.847Z  | API   | INFO | Assert field type: reference expected string, received string
+2026-10-06T09:19:40.849Z  | API   | INFO | Assert field type: id expected string, received string
+2026-10-06T09:19:40.851Z  | API   | INFO | Assert field value: status, expected "OK"
+2026-10-06T09:19:40.854Z  | API   | INFO | Assert status code: expected [200] , received [200]
+2026-10-06T09:19:40.856Z  | API   | INFO | Assert response body is a non-empty object
+2026-10-06T09:19:40.860Z  | API   | INFO | Assert field type: status expected string, received string
+2026-10-06T09:19:40.861Z  | API   | INFO | Assert field type: place_id expected string, received string
+2026-10-06T09:19:40.862Z  | API   | INFO | Assert field type: scope expected string, received string
+2026-10-06T09:19:40.863Z  | API   | INFO | Assert field type: reference expected string, received string
+2026-10-06T09:19:40.864Z  | API   | INFO | Assert field type: id expected string, received string
+2026-10-06T09:19:40.866Z  | API   | INFO | Assert field value: status, expected "OK"
+2026-10-06T09:19:40.867Z  | API   | INFO | ✓ Response: {"statusCode":200,"body":{"status":"OK","place_id":"f435876cce95c86daf0583bcbb1270a5","scope":"APP","reference":"040743f12f6ab3b3b71677f74aa2cf13040743f12f6ab3b3b71677f74aa2cf13","id":"040743f12f6ab3b3b71677f74aa2cf13"}}
+2026-10-06T09:19:45.868Z  | TEST  | INFO | Completed API test: create a place
