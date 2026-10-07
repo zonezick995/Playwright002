@@ -1,0 +1,2 @@
+2026-10-07T14:57:11.357Z  | TEST  | INFO | 🧪 Testing login flow
+2026-10-07T14:57:11.357Z  | UI    | INFO | Login as Admin

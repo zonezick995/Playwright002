@@ -1,0 +1,14 @@
+{
+	"mcpServers": {
+		"microsoft/playwright-mcp": {
+			"type": "local",
+			"command": "npx",
+			"args": [
+				"@playwright/mcp@latest"
+			],
+			"tools": [
+				"*"
+			]
+		}
+	}
+}
