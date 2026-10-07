@@ -14,6 +14,7 @@
 - Follow the repository's TypeScript and Playwright Test patterns.
 - Whenever a change introduces or materially changes the framework structure or architecture (for example, a new shared layer, module boundary, execution flow, fixture system, or reporting integration), create or update a detailed Markdown design document in `design-doc/` as part of the same change.
 - The design document should explain the problem and goals, proposed architecture and component responsibilities, interactions/data flow, affected files, configuration, error handling, key decisions and trade-offs, and validation strategy. Use a descriptive kebab-case filename; update a relevant existing document instead of creating a duplicate when appropriate.
+- Write design documents in `design-doc/` in Vietnamese. Keep English only for established technical terms, product/library names, identifiers, code, and terms whose translation would reduce clarity.
 - Do not require a design document for isolated test cases, routine bug fixes, or local refactors that do not change framework structure. If it is unclear whether a change is architectural, ask the user before deciding.
 
 ## UI and API Automation
