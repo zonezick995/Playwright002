@@ -10,6 +10,25 @@ applyTo:
 
 # Playwright UI and API Test Rules
 
+## Mandatory approval gate
+
+- Before implementing or executing a requested test, prepare a test-case proposal in the review table below and ask the user to confirm it.
+- Do not add or edit test specs, send API requests, or operate the target UI before explicit confirmation of the proposed cases.
+- If confirmation is absent, negative, or limited to discussing the plan, stop after design and skip implementation and execution.
+- Treat confirmation as approval only for the listed cases and scope. Ask again if the test data, target environment, behavior, or side effects materially change.
+- Approval of the plan does not authorize purchases, payments, destructive operations, or other consequential actions on a live system; obtain separate explicit authorization for those.
+
+### Test-case review format
+
+| ID | Type | Scenario / objective | Preconditions and test data | Steps | Expected result | Environment / side effects |
+|---|---|---|---|---|---|---|
+| TC-01 | UI / API | State one behavior to verify | Required setup and whether data is created or changed | Numbered, concise user/request actions | Observable UI state or response contract | Local / test / staging / production; note writes or cleanup |
+
+- Keep cases atomic and reviewable. Include positive and relevant negative/boundary cases without expanding beyond the user's request.
+- For API cases, show method, endpoint, payload shape with secrets redacted, expected status, and key response fields.
+- Mark any unresolved contract, missing test data, or potentially consequential side effect explicitly; do not assume it is approved.
+- Present the table and ask for explicit approval (for example, “Confirm these test cases so I can implement and run them?”). Then stop and wait.
+
 ## Test design
 
 - Keep each test focused on one behavior and give it a descriptive outcome-based name.
