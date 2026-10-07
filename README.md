@@ -162,3 +162,8 @@ Nếu chỉ cần sinh report mà không mở trình duyệt:
 ```bash
 npm run allure:generate
 ```
+
+### Framework CLI
+
+Hướng dẫn cài đặt và sử dụng CLI: [docs/framework-cli.md](./docs/framework-cli.md).
+Kiến trúc và luồng xử lý: [design-docs/framework-cli-design.md](./design-docs/framework-cli-design.md).

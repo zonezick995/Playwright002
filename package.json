@@ -2,6 +2,9 @@
   "name": "demo-mcp-playwright",
   "version": "1.0.0",
   "main": "index.js",
+  "bin": {
+    "pw-framework": "dist/cli.js"
+  },
   "scripts": {
     "test": "npx playwright test",
     "test:headed": "npx playwright test --headed",
@@ -17,7 +20,8 @@
     "allure:generate": "allure generate allure-results --clean -o allure-report",
     "allure:open": "allure open allure-report",
     "report:allure": "npm run allure:generate && npm run allure:open",
-    "report:allure-db": "npx playwright test tests/database/allure-db-report.spec.ts --project=chromium --reporter=line"
+    "report:allure-db": "npx playwright test tests/database/allure-db-report.spec.ts --project=chromium --reporter=line",
+    "framework": "node dist/cli.js"
   },
   "keywords": [],
   "author": "",

@@ -1,5 +1,7 @@
 node_modules
 dist
+.env*
+!.env.example
 allure-report
 allure-results
 test-report
