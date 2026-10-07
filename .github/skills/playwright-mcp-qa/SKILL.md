@@ -8,6 +8,8 @@ argument-hint: "Website URL or feature and the UI/API behavior to verify"
 
 Use this workflow when asked to test a website, explore a UI flow with MCP, or define repeatable UI/API automation for this repository.
 
+If the user asks only to design/create test cases or invokes `/playwright-testcase-design`, use [the design-only skill](../playwright-testcase-design/SKILL.md) and stop without implementation or execution.
+
 ## Choose the right test mechanism
 
 - **Live exploratory UI check:** use the connected Playwright MCP browser to navigate and interact with the requested website.
@@ -18,7 +20,7 @@ Use this workflow when asked to test a website, explore a UI flow with MCP, or d
 
 ## Procedure
 
-1. Clarify the target URL or API endpoint, feature, environment, and whether the user wants an MCP exploration or repeatable Playwright Test coverage. Do not access or mutate the target to discover behavior before approval.
+1. Clarify the target URL or API endpoint, feature, environment, and whether the user wants an MCP exploration or repeatable Playwright Test coverage. For materially ambiguous choices, offer practical options, recommend one when useful, and ask one focused question at a time. Do not access or mutate the target to discover behavior before approval.
 2. Draft and present a reviewable test-case table before implementation or execution:
    | ID | Type | Scenario / objective | Preconditions and test data | Steps | Expected result | Environment / side effects |
    |---|---|---|---|---|---|---|

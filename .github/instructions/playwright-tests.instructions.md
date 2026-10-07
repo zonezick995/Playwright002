@@ -10,6 +10,12 @@ applyTo:
 
 # Playwright UI and API Test Rules
 
+## Decision and clarification rule
+
+- Do not silently decide material test-design or execution details that the user has not specified, including scope, expected behavior, test data, target environment, destructive/lasting side effects, or whether to run against a live system.
+- Present practical options in plain language, recommend an option when useful, and ask the user to choose before acting. Ask one focused question at a time.
+- Do not interrupt for routine implementation details that are already fixed by the approved test cases or established repository patterns.
+
 ## Mandatory approval gate
 
 - Before implementing or executing a requested test, prepare a test-case proposal in the review table below and ask the user to confirm it.
