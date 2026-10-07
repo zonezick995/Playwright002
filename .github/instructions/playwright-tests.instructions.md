@@ -42,6 +42,7 @@ applyTo:
 - Keep assertions in the spec or an existing shared assertion helper. Avoid duplicating fixture setup, page actions, API request wrappers, or assertion utilities.
 - Make tests independent: do not rely on execution order or state left behind by another test.
 - Prefer condition-based waits and Playwright's auto-waiting to arbitrary timeouts.
+- If implementation introduces or materially changes framework architecture or structure (such as shared test infrastructure, fixtures, helper layers, execution flow, or reporting integration), create or update a detailed design document in `design-doc/` in the same change. Cover goals, architecture, component responsibilities, data/control flow, affected files, configuration, failure handling, trade-offs, and validation. Do not create a design doc for a routine test/spec addition or a local refactor that leaves framework structure unchanged.
 
 ## UI tests
 
