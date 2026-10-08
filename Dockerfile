@@ -43,7 +43,8 @@ COPY --from=build /app/playwright.config.ts ./playwright.config.ts
 COPY --from=build /app/global-teardown.ts ./global-teardown.ts
 COPY --from=build /app/tsconfig.json ./tsconfig.json
 
-# Treat CLI arguments after the image name as framework commands (test, report, help).
-ENTRYPOINT ["node", "dist/cli.js"]
+# Dispatch framework commands or an optional interactive shell.
+COPY --from=build /app/docker-entrypoint.sh ./docker-entrypoint.sh
+ENTRYPOINT ["sh", "/app/docker-entrypoint.sh"]
 # Run all tests, then generate a PostgreSQL-backed Allure report.
 CMD ["test-and-report"]

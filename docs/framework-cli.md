@@ -124,12 +124,25 @@ Build image từ root project:
 docker build -t pw-framework:local .
 ```
 
-Container có `ENTRYPOINT ["node", "dist/cli.js"]`, vì vậy truyền command trực
-tiếp sau tên image:
+Mặc định container chạy toàn bộ tests và sinh report. Có thể truyền framework
+command trực tiếp sau tên image để ghi đè `CMD`:
 
 ```powershell
 docker run --rm --env-file .env.docker pw-framework:local help
 docker run --rm --env-file .env.docker pw-framework:local test --project=chromium
+docker run --rm --env-file .env.docker pw-framework:local report --run-id 15
+```
+
+Để mở shell tương tác bên trong container, dùng `shell` và cấp pseudo-TTY:
+
+```powershell
+docker run --rm -it --env-file .env.docker pw-framework:local shell
+```
+
+Shell mở ở `/app`. Có thể chạy command shell không tương tác bằng:
+
+```powershell
+docker run --rm pw-framework:local shell -lc "node --version && java -version"
 ```
 
 Để sinh report và giữ file trên host, mount thư mục artifacts. Ví dụ PowerShell:

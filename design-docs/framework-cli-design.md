@@ -108,14 +108,24 @@ reporter và PostgreSQL driver.
 Runtime stage dùng:
 
 ```dockerfile
-ENTRYPOINT ["node", "dist/cli.js"]
+ENTRYPOINT ["sh", "/app/docker-entrypoint.sh"]
 CMD ["test-and-report"]
 ```
 
-Nhờ vậy các đối số của `docker run` trở thành command và options của framework,
-ví dụ `image test ...` hoặc `image report ...`. Mặc định container chạy toàn bộ
-suite rồi sinh report từ PostgreSQL. Người dùng có thể ghi đè command mặc định
-khi truyền command khác sau tên image.
+Entrypoint script dispatch `test`, `report`, `help` và command framework khác
+sang `node /app/dist/cli.js`. Nếu command đầu tiên là `shell`, script chuyển
+tiếp sang `/bin/bash` và giữ nguyên các arguments còn lại. Mặc định container
+chạy toàn bộ suite rồi sinh report từ PostgreSQL. Người dùng có thể ghi đè
+command mặc định bằng framework command khác hoặc vào shell tương tác.
+
+Ví dụ mở shell:
+
+```powershell
+docker run --rm -it <image> shell
+```
+
+`-it` cấp stdin/TTY cần thiết cho shell tương tác; không cần rebuild image để
+chọn command khác, chỉ cần truyền command khi tạo container.
 
 ### Secrets và output
 
