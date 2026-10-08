@@ -22,6 +22,7 @@ Các command hiện hỗ trợ:
 | `help` | In usage, danh sách command và ví dụ. |
 | `version` | Đọc version từ `package.json`. |
 | `test [args...]` | Khởi chạy Playwright CLI bằng child process và chuyển tiếp args. |
+| `test-and-report` | Chạy toàn bộ suite; sau đó sinh Allure report từ PostgreSQL. |
 | `report [options]` | Gọi repository và report generator để dựng report từ database. |
 
 ## Kiến trúc
@@ -35,6 +36,9 @@ User / CI
    │                    └── playwright.config.ts + reporters
    │                           ├── allure-results
    │                           └── PostgreSQL (auto-import khi test kết thúc)
+   │
+   ├── npm run framework -- test-and-report
+   │        └── chạy full Playwright suite → đọc PostgreSQL → sinh Allure HTML
    │
    └── npm run framework -- report [--run-id] [--output]
             └── cli.ts
@@ -77,6 +81,14 @@ Generator là nơi giữ chi tiết dựng lại Allure result JSON, attachments
 environment, categories, executor và history. CLI chỉ điều phối các component
 đó, không nhân đôi logic report.
 
+### Test rồi sinh report trong một command
+
+`test-and-report` chạy Playwright không kèm filter để thu thập toàn bộ suite.
+Sau khi Playwright kết thúc, CLI gọi luồng `report` trên run mới nhất trong
+PostgreSQL. Việc sinh report vẫn được thử khi test trả về lỗi, để giữ lại HTML
+diagnostics. Exit code cuối cùng ưu tiên lỗi test; nếu test pass nhưng sinh
+report thất bại, command trả mã khác 0.
+
 ### Docker multi-stage và entrypoint
 
 Dockerfile tách image thành hai stage:
@@ -97,12 +109,13 @@ Runtime stage dùng:
 
 ```dockerfile
 ENTRYPOINT ["node", "dist/cli.js"]
-CMD ["help"]
+CMD ["test-and-report"]
 ```
 
 Nhờ vậy các đối số của `docker run` trở thành command và options của framework,
-ví dụ `image test ...` hoặc `image report ...`. Container không tự chạy suite
-hoặc web server khi khởi động không có command; nó hiển thị CLI help.
+ví dụ `image test ...` hoặc `image report ...`. Mặc định container chạy toàn bộ
+suite rồi sinh report từ PostgreSQL. Người dùng có thể ghi đè command mặc định
+khi truyền command khác sau tên image.
 
 ### Secrets và output
 
@@ -125,6 +138,9 @@ Trong container, `localhost` trỏ về container hiện tại; host database c�
 3. Allure reporter ghi raw results/metadata vào `allure-results`.
 4. PostgreSQL reporter đọc result mới, insert run và metadata vào database.
 5. CLI kết thúc với exit code của Playwright.
+
+Với `test-and-report`, sau bước 5 CLI tiếp tục đọc run mới nhất trong PostgreSQL
+và sinh Allure HTML trước khi trả exit code tổng hợp.
 
 ### Sinh report từ database
 
@@ -167,6 +183,7 @@ CLI được kiểm tra qua:
 - `npm run build` để compile strict TypeScript.
 - `npm run framework -- help` và `npm run framework -- version`.
 - `npm run framework -- test --list` để xác nhận argument forwarding.
+- `npm run framework -- test-and-report` để chạy suite rồi sinh report khi có DB.
 - Giá trị `--run-id` sai định dạng phải làm CLI trả lỗi.
 
 Integration giữa report command với PostgreSQL cần database runtime hợp lệ; có

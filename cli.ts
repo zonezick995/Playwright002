@@ -18,12 +18,15 @@ const HELP = `Playwright framework CLI
 
 Usage:
   pw-framework test [spec-or-directory] [Playwright options]
+  pw-framework test-and-report
   pw-framework report [--run-id <id>] [--output <directory>]
   pw-framework version
   pw-framework help
 
 Commands:
   test      Run Playwright tests using the project configuration.
+  test-and-report
+            Run the full Playwright suite, then generate an Allure report from PostgreSQL.
   report    Generate an Allure HTML report from PostgreSQL.
             Defaults to the latest run and ./allure-db-reports.
   version   Print the framework package version.
@@ -31,6 +34,7 @@ Commands:
 
 Examples:
   pw-framework test tests/api --project=chromium
+  pw-framework test-and-report
   pw-framework report
   pw-framework report --run-id 15 --output ./artifacts/reports`;
 
@@ -109,6 +113,23 @@ async function generateReport(args: string[]): Promise<void> {
   }
 }
 
+async function runTestsAndGenerateReport(): Promise<number> {
+  const testExitCode = await runPlaywright([]);
+
+  try {
+    await generateReport([]);
+  } catch (error) {
+    console.error(
+      `[Playwright Framework] Report generation failed: ${
+        error instanceof Error ? error.message : String(error)
+      }`,
+    );
+    return testExitCode || 1;
+  }
+
+  return testExitCode;
+}
+
 async function printVersion(): Promise<void> {
   const packagePath = path.resolve(__dirname, "../package.json");
   const packageJson = JSON.parse(await readFile(packagePath, "utf8")) as {
@@ -135,6 +156,11 @@ async function main(): Promise<number> {
       return 0;
     case "test":
       return runPlaywright(args);
+    case "test-and-report":
+      if (args.length > 0) {
+        throw new Error("The test-and-report command does not accept additional arguments.");
+      }
+      return runTestsAndGenerateReport();
     case "report":
       await generateReport(args);
       return 0;

@@ -53,6 +53,26 @@ Lệnh này trả về exit code của Playwright để CI nhận biết test pa
 thêm `--reporter=line` nếu muốn giữ lại các reporters đã khai báo trong config;
 nếu cần reporter bổ sung, ưu tiên `--add-reporter`.
 
+## Chạy toàn bộ test rồi sinh report
+
+CLI chạy toàn bộ suite Playwright trước, sau đó sinh Allure HTML từ run vừa được
+reporter ghi vào PostgreSQL:
+
+```powershell
+npm run framework -- test-and-report
+```
+
+Docker image dùng command này làm mặc định. Vì vậy lệnh dưới đây sẽ chạy test
+toàn bộ rồi sinh report:
+
+```powershell
+docker run --rm --env-file .env.docker pw-framework:local
+```
+
+Command `test-and-report` vẫn thử sinh report nếu test có lỗi, nhưng container
+trả exit code khác 0 nếu test hoặc bước sinh report thất bại. Kết nối PostgreSQL
+phải được cấu hình để reporter lưu run và CLI đọc lại dữ liệu.
+
 ## Sinh report từ PostgreSQL
 
 Lệnh mặc định đọc run mới nhất:
@@ -143,4 +163,5 @@ theo DNS/service name có thể truy cập từ container test.
 | `help` | Hiển thị trợ giúp và ví dụ. |
 | `version` | Hiển thị version trong `package.json`. |
 | `test [args...]` | Chuyển tiếp đối số cho `playwright test`. |
+| `test-and-report` | Chạy toàn bộ suite rồi sinh Allure HTML từ PostgreSQL. |
 | `report [--run-id <id>] [--output <dir>]` | Sinh Allure HTML từ PostgreSQL. |

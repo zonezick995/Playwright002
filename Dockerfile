@@ -45,5 +45,5 @@ COPY --from=build /app/tsconfig.json ./tsconfig.json
 
 # Treat CLI arguments after the image name as framework commands (test, report, help).
 ENTRYPOINT ["node", "dist/cli.js"]
-# Show CLI help when no command is supplied.
-CMD ["help"]
+# Run all tests, then generate a PostgreSQL-backed Allure report.
+CMD ["test-and-report"]
