@@ -10,11 +10,15 @@ Dùng quy trình này khi người dùng muốn kiểm tra website, khám phá l
 
 Nếu người dùng chỉ yêu cầu thiết kế test case hoặc gọi `/playwright-testcase-design`, hãy dùng [skill chỉ thiết kế test case](../playwright-testcase-design/SKILL.md). Dừng sau khi trình bày test case; không triển khai hay chạy.
 
+Nếu người dùng yêu cầu phân tích requirement trước khi kiểm thử, hãy dùng [skill phân tích requirement QA/QC](../qa-requirement-analysis/SKILL.md) để tạo tài liệu Markdown làm đầu vào cho các bước tiếp theo.
+
+Nếu người dùng yêu cầu triển khai test case đã duyệt thành code tự động hóa UI/API, dùng [skill triển khai test case](../playwright-testcase-implementation/SKILL.md).
+
 ## 1. Chọn cách kiểm thử
 
 - **Kiểm tra UI khám phá trên website thật:** dùng trình duyệt Playwright MCP được kết nối để mở và thao tác với website đã được duyệt.
 - **Kiểm thử hồi quy UI có thể lặp lại:** tạo hoặc chạy Playwright Test spec trong `tests/`, sử dụng fixture và page action hiện có.
-- **Tự động hóa API:** tạo hoặc chạy Playwright Test API spec bằng request facility của Playwright hoặc helper sẵn có trong `Helper/` và `api/`.
+- **Tự động hóa API:** tạo hoặc chạy Playwright Test API spec bằng request facility của Playwright hoặc client/service sẵn có trong `api/`.
 - Trình duyệt MCP không phải Playwright Test runner. Không nói rằng thao tác MCP đã chạy spec hoặc tạo kết quả của một lần chạy kiểm thử tự động.
 - Chỉ dùng network inspection để hiểu request do UI gửi; không xem đó là thay thế cho assertion API contract.
 
@@ -45,7 +49,7 @@ Sau khi được duyệt:
 ## 4. Triển khai hoặc chạy kiểm thử API
 
 - Xác định endpoint, method, đầu vào bắt buộc, status mong đợi và response contract từ repository hoặc ngữ cảnh kiểm thử đã được phép sử dụng.
-- Dùng Playwright Test spec và request helper/assertion sẵn có khi phù hợp.
+- Dùng Playwright Test spec và API client/service/assertion sẵn có trong `api/` khi phù hợp.
 - Kiểm tra status, cấu trúc response và các trường quan trọng. Cô lập dữ liệu kiểm thử; chỉ dọn dẹp tài nguyên do test tạo khi việc đó an toàn.
 - Không thực hiện thao tác ghi hoặc phá hủy dữ liệu chưa được duyệt trên hệ thống thật.
 - Nếu chuyển một phát hiện khám phá thành kiểm thử hồi quy, đặt spec trong thư mục tính năng phù hợp dưới `tests/` và tuân theo [instruction kiểm thử Playwright](../../instructions/playwright-tests.instructions.md).

@@ -1,0 +1,9 @@
+2026-10-22T14:33:18.545Z  | API   | INFO | [POST] https://rahulshettyacademy.com/maps/api/place/add/json (attempt 1)
+2026-10-22T14:33:19.019Z  | API   | INFO | Assert status code: expected [200] , received [200]
+2026-10-22T14:33:19.023Z  | API   | INFO | Assert response body is a non-empty object
+2026-10-22T14:33:19.024Z  | API   | INFO | Assert field type: status expected string, received string
+2026-10-22T14:33:19.025Z  | API   | INFO | Assert field type: place_id expected string, received string
+2026-10-22T14:33:19.025Z  | API   | INFO | Assert field type: scope expected string, received string
+2026-10-22T14:33:19.026Z  | API   | INFO | Assert field type: reference expected string, received string
+2026-10-22T14:33:19.026Z  | API   | INFO | Assert field type: id expected string, received string
+2026-10-22T14:33:19.027Z  | API   | INFO | Assert field value: status, expected "OK"

@@ -16,7 +16,6 @@ type CLMSActions = {
   loginAndVerifyDB: (credentials: CLMS.Credentials) => Promise<{ users: Array<Record<string, any>> }>;
   testSwitchTab: (tabIndex: number, credentials: CLMS.Credentials) => Promise<void>;
   testExcel: () => Promise<void>;
-  testAPI: () => Promise<void>;
 };
 
 // Type-safe credentials
@@ -27,7 +26,6 @@ type OrangeHrActions = {
 // Type-safe credentials
 type herokuappActions = {
   login: (credentials: HERO.Credentials) => Promise<void>;
-  testAPI: () => Promise<void>;
 };
 
 // Extend base test with our custom fixtures
@@ -46,7 +44,6 @@ export const test = base.extend<{
       loginAndVerifyDB: (creds) => CLMS.loginAndVerifyDB(page, creds, clmsDb),
       testSwitchTab: (tabIndex, creds) => CLMS.testSwitchTab(page, tabIndex, creds),
       testExcel: () => CLMS.testExcelHelper(page),
-      testAPI: () => CLMS.testAPIHelper(page),
     });
   },
 
@@ -61,7 +58,6 @@ export const test = base.extend<{
   hero: async ({ page }, use) => {
     await use({
       login: (creds) => HERO.f_login(page, creds),
-      testAPI: () => HERO.testAPIExample(page),
     });
   },
   

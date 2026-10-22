@@ -5,7 +5,6 @@ applyTo:
   - "tests/**/*.spec.ts"
   - "pages/**/*.ts"
   - "api/**/*.ts"
-  - "Helper/API*.ts"
 ---
 
 # Quy tắc kiểm thử UI và API bằng Playwright
@@ -35,6 +34,7 @@ applyTo:
 
 - Mỗi test tập trung vào một hành vi; đặt tên mô tả kết quả cần kiểm chứng.
 - Dùng `test.describe` để nhóm các kịch bản liên quan. Tận dụng fixture hiện có trong `fixtures/` khi chúng cung cấp page object hoặc bước thiết lập phù hợp.
+- Dùng `fixtures/pom.fixtures.ts` cho kiểm thử UI dựa trên page object; dùng `fixtures/api.fixtures.ts` cho API spec độc lập để tránh phụ thuộc fixture trình duyệt không cần thiết.
 - Đặt assertion trong spec hoặc shared assertion helper đã có. Tránh tạo trùng lặp cho fixture setup, page action, API request wrapper hoặc assertion utility.
 - Giữ các test độc lập: không phụ thuộc thứ tự chạy hoặc trạng thái do test khác để lại.
 - Ưu tiên chờ theo điều kiện và cơ chế auto-waiting của Playwright thay vì timeout cố định.
@@ -51,7 +51,7 @@ applyTo:
 
 ## 4. Viết kiểm thử API
 
-- Dùng khả năng API request của Playwright hoặc helper sẵn có trong `Helper/` và `api/`; giữ nguyên quy ước xử lý lỗi và báo cáo hiện có.
+- Dùng khả năng API request của Playwright hoặc component sẵn có trong `api/`. Đặt xử lý nghiệp vụ có thể tái sử dụng trong `api/business/`, giao tiếp HTTP trong `api/client/`, facade trong `api/services/` và kiểu dữ liệu trong `api/models/`; spec chỉ gọi business action và xác minh kết quả. Chỉ dùng tiện ích chung trong `Helper/` khi phù hợp.
 - Kiểm tra status, cấu trúc, kiểu dữ liệu và các giá trị quan trọng trong response. Bổ sung trường hợp lỗi khi thuộc hành vi được yêu cầu.
 - Kiểm tra response quan sát được, không kiểm tra chi tiết triển khai. Không ghi authorization header, cookie, token hoặc dữ liệu response nhạy cảm vào log.
 - Giữ test API ổn định và xác định được kết quả. Dùng dữ liệu riêng khi cần; chỉ dọn dẹp tài nguyên do test tạo nếu việc dọn dẹp an toàn và được hỗ trợ.

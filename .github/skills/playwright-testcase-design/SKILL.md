@@ -24,9 +24,10 @@ Không được:
 ## 2. Thu thập thông tin và xử lý điểm chưa rõ
 
 1. Xác định tính năng, loại kiểm thử (UI/API), endpoint hoặc trang nếu được cung cấp, môi trường nếu đã biết và hành vi mong đợi.
-2. Chỉ sử dụng thông tin người dùng cung cấp hoặc ngữ cảnh repository hiện có. Không truy cập hệ thống thật để tìm phần còn thiếu.
-3. Nếu có quyết định quan trọng chưa rõ, nêu phương án thực tế, đề xuất khi hữu ích và hỏi một câu hỏi cụ thể trước khi hoàn thiện đề xuất.
-4. Nếu chưa biết điều kiện trước, contract response, status code, dọn dẹp dữ liệu hoặc môi trường, đánh dấu **TBD**; không tự đặt giả định thành sự thật.
+2. Nếu người dùng cung cấp hoặc repository có tài liệu phân tích requirement từ [skill QA/QC](../qa-requirement-analysis/SKILL.md), dùng tài liệu đó làm nguồn đầu vào chính; giữ mã requirement và liên kết acceptance criteria trong từng test case. Ghi rõ nội dung còn TBD thay vì tự lấp chỗ trống.
+3. Chỉ sử dụng thông tin người dùng cung cấp hoặc ngữ cảnh repository hiện có. Không truy cập hệ thống thật để tìm phần còn thiếu.
+4. Nếu có quyết định quan trọng chưa rõ, nêu phương án thực tế, đề xuất khi hữu ích và hỏi một câu hỏi cụ thể trước khi hoàn thiện đề xuất.
+5. Nếu chưa biết điều kiện trước, contract response, status code, dọn dẹp dữ liệu hoặc môi trường, đánh dấu **TBD**; không tự đặt giả định thành sự thật.
 
 ## 3. Xây dựng test case
 
@@ -46,5 +47,6 @@ Trình bày đề xuất theo bảng sau:
 | TC-01 | UI / API | Một hành vi cần xác minh | Thiết lập và dữ liệu; che thông tin bí mật | Các thao tác ngắn gọn theo thứ tự | Trạng thái UI hoặc response contract quan sát được | Local / test / staging / production / TBD; ghi rõ thao tác ghi dữ liệu |
 
 - Chỉ hỏi người dùng chọn phương án khi thiếu thông tin thiết yếu; ưu tiên lựa chọn rõ ràng thay vì tự suy đoán.
+- Sau khi người dùng duyệt test case và yêu cầu triển khai tự động hóa, dùng [skill triển khai test case](../playwright-testcase-implementation/SKILL.md). Việc thiết kế trong skill này vẫn dừng tại đề xuất; không tự chuyển sang triển khai.
 - Kết thúc bằng việc nói rõ rằng chỉ thiết kế test case đã được thực hiện: không truy cập website/API, không triển khai test và không chạy kiểm thử.
 - Sau đó dừng.

@@ -41,8 +41,4 @@ test.describe('CLMS Login Tests', () => {
     await clms.testExcel();
   });
 
-  test.skip('should call API', async ({ clms }) => {
-    Logger.info('TEST', '🧪 Testing API helper');
-    await clms.testAPI();
-  });
 });
