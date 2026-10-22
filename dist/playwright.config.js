@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const test_1 = require("@playwright/test");
-const logger_1 = require("./Helper/utils/logger");
+const logger_1 = require("./src/Helper/utils/logger");
 const dotenv_1 = __importDefault(require("dotenv"));
 const path_1 = __importDefault(require("path"));
 // Load environment variables before configuring log level.
@@ -30,7 +30,7 @@ const buildUrl = ciRepository && ciServerUrl && ciRunId
     : process.env.BUILD_URL;
 exports.default = (0, test_1.defineConfig)({
     // Global setup and teardown
-    globalTeardown: require.resolve('./global-teardown'), // optional, nếu có cần dọn dẹp sau khi chạy xong tất cả tests
+    globalTeardown: require.resolve('./src/global-teardown'),
     // Test directory
     testDir: './tests', // thư mục chứa test cases
     // Timeouts
@@ -72,7 +72,7 @@ exports.default = (0, test_1.defineConfig)({
                     },
                 ],
             }],
-        [require.resolve('./Helper/Allure/postgres/allure-postgres-reporter'), {
+        [require.resolve('./src/Helper/Allure/postgres/allure-postgres-reporter'), {
                 resultsDir: 'allure-results',
                 executor: {
                     name: process.env.CI ? 'CI' : 'Local',
@@ -87,11 +87,11 @@ exports.default = (0, test_1.defineConfig)({
                     ...(ciRunAttempt ? { reportName: `Attempt ${ciRunAttempt}` } : {}),
                 },
             }],
-        [require.resolve('./Helper/Allure/postgres/test-output-reporter')],
+        [require.resolve('./src/Helper/Allure/postgres/test-output-reporter')],
     ],
     // Shared settings for all projects
     use: {
-        baseURL: process.env.BASE_URL || 'http://localhost:3000', // base URL cho các lệnh page.goto() và APIHelper
+        baseURL: process.env.BASE_URL || 'http://localhost:3000',
         trace: 'on-first-retry', // ghi lại trace chỉ khi test thất bại và được retry
         headless: process.env.PLAYWRIGHT_HEADLESS !== 'false', // mặc định chạy headless, chỉ chạy headed nếu explicitly set PLAYWRIGHT_HEADLESS=false
         screenshot: 'only-on-failure', // chụp screenshot chỉ khi test thất bại

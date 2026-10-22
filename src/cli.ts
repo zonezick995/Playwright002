@@ -131,7 +131,7 @@ async function runTestsAndGenerateReport(): Promise<number> {
 }
 
 async function printVersion(): Promise<void> {
-  const packagePath = path.resolve(__dirname, "../package.json");
+  const packagePath = path.resolve(__dirname, "../../package.json");
   const packageJson = JSON.parse(await readFile(packagePath, "utf8")) as {
     version?: unknown;
   };

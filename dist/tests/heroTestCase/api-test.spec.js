@@ -1,11 +1,22 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const pom_fixtures_1 = require("../../fixtures/pom.fixtures");
-const logger_1 = require("../../Helper/utils/logger");
-pom_fixtures_1.test.describe('API Tests', () => {
-    (0, pom_fixtures_1.test)('should create a place successfully', async ({ hero }) => {
-        logger_1.Logger.info('TEST', 'Starting API test: create a place');
-        await hero.testAPI();
-        logger_1.Logger.info('TEST', 'Completed API test: create a place');
+const api_fixtures_1 = require("../../src/fixtures/api.fixtures");
+const api_1 = require("../../src/api");
+api_fixtures_1.test.describe('Add Place API', () => {
+    (0, api_fixtures_1.test)('creates a place successfully', async ({ api }) => {
+        const response = await (0, api_1.createPlace)(api);
+        await (0, api_1.assertApiResponse)(response, {
+            statusCode: 200,
+            fieldTypes: {
+                status: 'string',
+                place_id: 'string',
+                scope: 'string',
+                reference: 'string',
+                id: 'string',
+            },
+            fieldValues: {
+                status: 'OK',
+            },
+        });
     });
 });

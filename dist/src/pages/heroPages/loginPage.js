@@ -1,0 +1,20 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.f_login = void 0;
+const test_1 = require("@playwright/test");
+const logger_1 = require("../../Helper/utils/logger");
+const BasePage_1 = require("../BasePage");
+const f_login = async (page, { username, password }) => {
+    const actions = (0, BasePage_1.createPageActions)(page);
+    //const baseUrl = process.env.ORANGE_BASE_URL_LOGIN;
+    //if (!baseUrl) throw new Error('BASE_URL not set');
+    logger_1.Logger.info('UI', `Login as ${username}`);
+    await actions.goto('https://the-internet.herokuapp.com/login');
+    await page.getByRole('textbox', { name: 'Username' }).fill(username);
+    await page.getByRole('textbox', { name: 'Password' }).fill(password);
+    await page.getByRole('button', { name: 'Login' }).click();
+    await (0, test_1.expect)(page.locator('#flash')).toContainText('Your username is invalid!');
+    logger_1.Logger.info('UI', `✓ Logged in as ${username}`);
+    await actions.wait.timeout(5000);
+};
+exports.f_login = f_login;

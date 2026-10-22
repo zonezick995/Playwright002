@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const test_1 = require("@playwright/test");
 const promises_1 = require("node:fs/promises");
-const Allure_1 = require("../../Helper/Allure");
+const Allure_1 = require("../../src/Helper/Allure");
 (0, test_1.test)('generates an HTML report from the latest PostgreSQL Allure run', async () => {
     const configuredRunId = process.env.ALLURE_RUN_ID?.trim();
     const runId = configuredRunId ? Number(configuredRunId) : undefined;

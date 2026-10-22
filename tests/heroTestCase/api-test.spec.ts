@@ -1,5 +1,5 @@
-import { test } from '../../fixtures/api.fixtures';
-import { assertApiResponse, createPlace } from '../../api';
+import { test } from '../../src/fixtures/api.fixtures';
+import { assertApiResponse, createPlace } from '../../src/api';
 
 test.describe('Add Place API', () => {
   test('creates a place successfully', async ({ api }) => {

@@ -23,7 +23,7 @@ Dùng skill này để chuyển test case đã được duyệt thành mã Playw
 1. **Đọc nguồn:** đọc test case đã duyệt và tài liệu phân tích requirement liên quan nếu có. Tôn trọng trạng thái `TBD`, ghi chú và mã requirement; không tự chuyển nội dung chưa xác nhận thành assertion.
 2. **Lập bản đồ phạm vi:** liệt kê test case ID, loại (UI/API), file dự kiến, fixture/helper cần dùng và assertion quan sát được. Giữ liên kết từ test case tới requirement/acceptance criteria.
 3. **Kiểm tra prior art:** xem test spec, fixtures, page objects, API helpers, cấu hình Playwright và lệnh trong `package.json` đang có. Tái sử dụng pattern hiện hữu; chỉ thêm abstraction khi thực sự cần.
-4. **Triển khai theo nhóm tính năng:** đặt spec trong `tests/<feature>/` theo cấu trúc hiện có. Với API, đặt use-case/xử lý nghiệp vụ có thể tái sử dụng trong `api/business/`; spec lấy client/service qua `fixtures/api.fixtures.ts` để gọi use-case và tập trung vào assertion. Với UI, dùng TypeScript, `test`/`expect` và fixture/page action hiện có.
+4. **Triển khai theo nhóm tính năng:** đặt spec trong `tests/<feature>/` theo cấu trúc hiện có. Với API, đặt use-case/xử lý nghiệp vụ có thể tái sử dụng trong `src/api/business/`; spec lấy client/service qua `src/fixtures/api.fixtures.ts` để gọi use-case và tập trung vào assertion. Với UI, dùng TypeScript, `test`/`expect` và fixture/page action trong `src/fixtures/` và `src/pages/`.
 5. **Kiểm tra phạm vi thay đổi:** chỉ sửa những spec, page action, fixture hoặc helper cần thiết để hiện thực các case đã duyệt. Nếu thay đổi làm phát sinh hoặc thay đổi đáng kể cấu trúc framework, cập nhật/tạo tài liệu thiết kế trong `design-doc/` theo instruction của repository.
 6. **Xác thực:** chạy kiểm tra mã phù hợp và test hẹp nhất liên quan theo hướng dẫn bên dưới. Nếu môi trường test hoặc tác động thực thi chưa rõ, hỏi trước khi chạy; có thể hoàn tất phần code nhưng báo rõ phần chưa chạy.
 7. **Báo cáo:** tổng kết case nào đã triển khai, file thay đổi, lệnh đã chạy, kết quả, báo cáo Allure nếu được tạo, và case nào bị chặn/chưa bao phủ.
@@ -33,13 +33,13 @@ Dùng skill này để chuyển test case đã được duyệt thành mã Playw
 - Ưu tiên `getByRole`, `getByLabel`, `getByPlaceholder`; chỉ dùng test ID ổn định khi locator truy cập được không phù hợp.
 - Thực hiện các bước người dùng đã duyệt theo thứ tự và assertion trên kết quả người dùng có thể quan sát, chẳng hạn URL, nội dung, trạng thái hoặc thông báo.
 - Không xem thao tác click/fill thành công là bằng chứng tính năng hoạt động. Dùng `expect` với trạng thái cụ thể.
-- Dùng page object/action trong `pages/` khi đã có hoặc khi hành vi dùng lại thực sự cần thiết; nối vào fixture hiện có nếu phù hợp.
+- Dùng page object/action trong `src/pages/` khi đã có hoặc khi hành vi dùng lại thực sự cần thiết; nối vào fixture hiện có nếu phù hợp.
 - Tránh selector mong manh, assertion về chi tiết triển khai, timeout cố định và phụ thuộc thứ tự chạy.
 - Dữ liệu đăng nhập hoặc bí mật chỉ được đọc từ biến môi trường/cơ chế cấu hình an toàn đã có; không thêm credential dạng literal vào spec.
 
 ## Quy tắc cho test API
 
-- Tận dụng API client/service/model, fixture và assertion hiện có trong `api/` hoặc `fixtures/`; chỉ dùng tiện ích chung trong `Helper/` khi phù hợp. Không tạo request wrapper trùng lặp.
+- Tận dụng API client/service/model, fixture và assertion hiện có trong `src/api/` hoặc `src/fixtures/`; chỉ dùng tiện ích chung trong `src/Helper/` khi phù hợp. Không tạo request wrapper trùng lặp.
 - Theo test case đã duyệt, kiểm tra method/endpoint, status, cấu trúc và giá trị response liên quan. Nếu case chỉ xác định một phần contract, chỉ assert phần đã được xác nhận.
 - Che token, cookie, authorization header, dữ liệu cá nhân và payload nhạy cảm khỏi log, attachment, assertion message và mã nguồn.
 - Cô lập dữ liệu; dùng dữ liệu duy nhất khi phù hợp. Chỉ cleanup tài nguyên do test tạo khi an toàn, được hỗ trợ và nằm trong phạm vi đã duyệt.

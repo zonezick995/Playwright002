@@ -23,10 +23,10 @@ AllurePostgresReportGenerator
 
 ## 1. Source cần copy
 
-Copy toàn bộ thư mục `Helper/Allure`, không chỉ riêng report generator:
+Copy toàn bộ thư mục `src/Helper/Allure`, không chỉ riêng report generator:
 
 ```text
-Helper/Allure/
+src/Helper/Allure/
 ├── index.ts
 ├── allure-results.parser.ts
 ├── types/
@@ -247,7 +247,7 @@ import {
   AllurePostgresReportGenerator,
   AllurePostgresRepository,
   createAllurePostgresPool,
-} from "./Helper/Allure";
+} from "./src/Helper/Allure";
 
 const pool = createAllurePostgresPool();
 

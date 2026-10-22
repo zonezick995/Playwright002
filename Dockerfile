@@ -31,16 +31,12 @@ COPY --from=build /app/package.json ./package.json
 COPY --from=build /app/node_modules ./node_modules
 COPY --from=build /app/dist ./dist
 
-# Playwright loads TypeScript tests and config at runtime, so include their imports.
-COPY --from=build /app/Helper ./Helper
-COPY --from=build /app/api ./api
-COPY --from=build /app/fixtures ./fixtures
-COPY --from=build /app/pages ./pages
+# Playwright loads TypeScript tests and config at runtime, so include source and tests.
+COPY --from=build /app/src ./src
 COPY --from=build /app/tests ./tests
 
-# Include the Playwright/TypeScript runtime configuration and global teardown.
+# Include the Playwright/TypeScript runtime configuration.
 COPY --from=build /app/playwright.config.ts ./playwright.config.ts
-COPY --from=build /app/global-teardown.ts ./global-teardown.ts
 COPY --from=build /app/tsconfig.json ./tsconfig.json
 
 # Dispatch framework commands or an optional interactive shell.

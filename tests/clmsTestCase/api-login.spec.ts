@@ -1,5 +1,5 @@
-import { test } from '../../fixtures/api.fixtures';
-import { loginToClms } from '../../api';
+import { test } from '../../src/fixtures/api.fixtures';
+import { loginToClms } from '../../src/api';
 
 test.describe('CLMS Login API', () => {
   test.skip('calls the login endpoint', async ({ api }) => {

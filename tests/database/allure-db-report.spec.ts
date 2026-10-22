@@ -5,7 +5,7 @@ import {
   AllurePostgresReportGenerator,
   AllurePostgresRepository,
   createAllurePostgresPool,
-} from '../../Helper/Allure';
+} from '../../src/Helper/Allure';
 
 test('generates an HTML report from the latest PostgreSQL Allure run', async () => {
   const configuredRunId = process.env.ALLURE_RUN_ID?.trim();

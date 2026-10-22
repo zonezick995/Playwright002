@@ -1,5 +1,5 @@
-import { test, expect } from '../../fixtures/pom.fixtures';
-import { Logger } from '../../Helper/utils/logger';
+import { test, expect } from '../../src/fixtures/pom.fixtures';
+import { Logger } from '../../src/Helper/utils/logger';
 
 /**
 * TypeScript Idiomatic Test Suite

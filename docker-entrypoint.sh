@@ -6,4 +6,4 @@ if [ "${1:-}" = "shell" ]; then
   exec /bin/bash "$@"
 fi
 
-exec node /app/dist/cli.js "$@"
+exec node /app/dist/src/cli.js "$@"

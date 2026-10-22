@@ -3,7 +3,10 @@
 node_modules/
 .env.postgres.local
 /allure-db-reports/
+/allure-results/
+/allure-report/
 /test-results/
+/test-report/
 /playwright-report/
 /blob-report/
 /playwright/.cache/

@@ -17,8 +17,8 @@ Nếu người dùng yêu cầu triển khai test case đã duyệt thành code 
 ## 1. Chọn cách kiểm thử
 
 - **Kiểm tra UI khám phá trên website thật:** dùng trình duyệt Playwright MCP được kết nối để mở và thao tác với website đã được duyệt.
-- **Kiểm thử hồi quy UI có thể lặp lại:** tạo hoặc chạy Playwright Test spec trong `tests/`, sử dụng fixture và page action hiện có.
-- **Tự động hóa API:** tạo hoặc chạy Playwright Test API spec bằng request facility của Playwright hoặc client/service sẵn có trong `api/`.
+- **Kiểm thử hồi quy UI có thể lặp lại:** tạo hoặc chạy Playwright Test spec trong `tests/`, sử dụng fixture trong `src/fixtures/` và page action trong `src/pages/`.
+- **Tự động hóa API:** tạo hoặc chạy Playwright Test API spec bằng request facility của Playwright hoặc client/service sẵn có trong `src/api/`.
 - Trình duyệt MCP không phải Playwright Test runner. Không nói rằng thao tác MCP đã chạy spec hoặc tạo kết quả của một lần chạy kiểm thử tự động.
 - Chỉ dùng network inspection để hiểu request do UI gửi; không xem đó là thay thế cho assertion API contract.
 
@@ -49,7 +49,7 @@ Sau khi được duyệt:
 ## 4. Triển khai hoặc chạy kiểm thử API
 
 - Xác định endpoint, method, đầu vào bắt buộc, status mong đợi và response contract từ repository hoặc ngữ cảnh kiểm thử đã được phép sử dụng.
-- Dùng Playwright Test spec và API client/service/assertion sẵn có trong `api/` khi phù hợp.
+- Dùng Playwright Test spec và API client/service/assertion sẵn có trong `src/api/` khi phù hợp.
 - Kiểm tra status, cấu trúc response và các trường quan trọng. Cô lập dữ liệu kiểm thử; chỉ dọn dẹp tài nguyên do test tạo khi việc đó an toàn.
 - Không thực hiện thao tác ghi hoặc phá hủy dữ liệu chưa được duyệt trên hệ thống thật.
 - Nếu chuyển một phát hiện khám phá thành kiểm thử hồi quy, đặt spec trong thư mục tính năng phù hợp dưới `tests/` và tuân theo [instruction kiểm thử Playwright](../../instructions/playwright-tests.instructions.md).

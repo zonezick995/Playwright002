@@ -11,7 +11,7 @@ Tạo giao diện command-line thống nhất để:
 
 ## Phạm vi hiện tại
 
-CLI được triển khai ở root source `cli.ts` và compile thành `dist/cli.js`.
+CLI được triển khai trong `src/cli.ts` và compile thành `dist/src/cli.js`.
 `package.json` khai báo npm bin `pw-framework` cùng script `framework` để chạy
 CLI trong source project.
 
@@ -31,7 +31,7 @@ Các command hiện hỗ trợ:
 User / CI
    │
    ├── npm run framework -- test <Playwright args>
-   │        └── cli.ts
+   │        └── src/cli.ts
    │             └── child process: @playwright/test/cli test <args>
    │                    └── playwright.config.ts + reporters
    │                           ├── allure-results
@@ -41,7 +41,7 @@ User / CI
    │        └── chạy full Playwright suite → đọc PostgreSQL → sinh Allure HTML
    │
    └── npm run framework -- report [--run-id] [--output]
-            └── cli.ts
+            └── src/cli.ts
                  ├── createAllurePostgresPool()
                  ├── AllurePostgresRepository.readReport(runId)
                  └── AllurePostgresReportGenerator.generate(runId)
@@ -97,8 +97,7 @@ Dockerfile tách image thành hai stage:
    bằng `npm run build`.
 2. `runtime` dùng cùng Playwright base image, cài Java cần cho Allure CLI, rồi
    chỉ copy `package.json`, `node_modules`, `dist` và source/config cần để chạy
-   Playwright (`Helper`, `api`, `fixtures`, `pages`, `tests`,
-   `playwright.config.ts`, `global-teardown.ts`, `tsconfig.json`).
+   Playwright (`src`, `tests`, `playwright.config.ts`, `tsconfig.json`).
 
 Source test/config được giữ trong runtime vì Playwright nạp các spec/config
 TypeScript trực tiếp khi thực thi `test`; chỉ có `dist` là chưa đủ. Dependency
@@ -113,7 +112,7 @@ CMD ["test-and-report"]
 ```
 
 Entrypoint script dispatch `test`, `report`, `help` và command framework khác
-sang `node /app/dist/cli.js`. Nếu command đầu tiên là `shell`, script chuyển
+sang `node /app/dist/src/cli.js`. Nếu command đầu tiên là `shell`, script chuyển
 tiếp sang `/bin/bash` và giữ nguyên các arguments còn lại. Mặc định container
 chạy toàn bộ suite rồi sinh report từ PostgreSQL. Người dùng có thể ghi đè
 command mặc định bằng framework command khác hoặc vào shell tương tác.
@@ -171,7 +170,7 @@ npm run build
 Artifacts trong Docker/image:
 
 ```text
-dist/cli.js
+dist/src/cli.js
 ```
 
 Report mặc định:

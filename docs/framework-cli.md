@@ -28,7 +28,7 @@ npm run framework -- <command> [options]
 Hoặc gọi file đã build:
 
 ```powershell
-node dist/cli.js <command> [options]
+node dist/src/cli.js <command> [options]
 ```
 
 Xem danh sách command:

@@ -3,7 +3,7 @@ import { mkdtemp, mkdir, rm, writeFile } from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 
-import { AllureMetadataParser } from '../../Helper/Allure';
+import { AllureMetadataParser } from '../../src/Helper/Allure';
 
 test('parses Allure environment, categories, executor, and history artifacts', async () => {
   const resultsDir = await mkdtemp(path.join(os.tmpdir(), 'allure-metadata-'));

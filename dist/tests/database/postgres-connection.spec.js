@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const test_1 = require("@playwright/test");
 const node_path_1 = __importDefault(require("node:path"));
-const Allure_1 = require("../../Helper/Allure");
+const Allure_1 = require("../../src/Helper/Allure");
 (0, test_1.test)('inserts parsed Allure results into PostgreSQL', async () => {
     const resultsDir = node_path_1.default.resolve(process.cwd(), 'allure-results');
     const parser = new Allure_1.AllureResultsParser(resultsDir, {

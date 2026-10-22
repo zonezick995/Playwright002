@@ -3,7 +3,7 @@
 ## Quy tắc chung
 
 - Tổ chức các kịch bản tự động trong `tests/`, nhóm theo tính năng.
-- Tái sử dụng fixture trong `fixtures/`, page action trong `pages/` và API business/client/service/model trong `api/`. Đặt xử lý use-case API trong `api/business/`; spec gọi business action qua `api.fixtures.ts`. Dùng `pom.fixtures.ts` cho UI spec dựa trên page object; dùng tiện ích chung trong `Helper/` khi phù hợp và không tạo chức năng trùng lặp.
+- Đặt toàn bộ mã framework trong `src/`. Tái sử dụng fixture trong `src/fixtures/`, page action trong `src/pages/` và API business/client/service/model trong `src/api/`. Đặt xử lý use-case API trong `src/api/business/`; spec gọi business action qua `src/fixtures/api.fixtures.ts`. Dùng `src/fixtures/pom.fixtures.ts` cho UI spec dựa trên page object; dùng tiện ích chung trong `src/Helper/` khi phù hợp và không tạo chức năng trùng lặp.
 - Tuân theo quy ước TypeScript và Playwright Test hiện có.
 - Mỗi test cần độc lập, tập trung vào hành vi cụ thể và xác minh kết quả quan sát được. Ưu tiên điều kiện chờ rõ ràng thay vì thời gian chờ cố định.
 

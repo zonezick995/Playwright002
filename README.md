@@ -52,21 +52,24 @@ npm run test
 
 ```text
 .
-├── api/
-│   ├── business/       # Use-case và xử lý nghiệp vụ API
-│   ├── client/         # HTTP transport dựa trên Playwright APIRequestContext
-│   ├── models/         # Kiểu request, response và assertion
-│   ├── services/       # Facade API và assertion service
-│   ├── index.ts        # Public exports
-│   ├── baseApi.ts      # Re-export tương thích
-│   └── baseAssert.ts   # Re-export tương thích
-├── fixtures/
-│   ├── api.fixtures.ts # Fixture API độc lập, không khởi tạo browser page
-│   ├── db.fixtures.ts  # Fixture database
-│   └── pom.fixtures.ts # Fixture UI/POM và các action theo ứng dụng
-├── pages/              # Page action và logic UI theo ứng dụng
+├── src/
+│   ├── api/
+│   │   ├── business/   # Use-case và xử lý nghiệp vụ API
+│   │   ├── client/     # HTTP transport dựa trên Playwright APIRequestContext
+│   │   ├── models/     # Kiểu request, response và assertion
+│   │   ├── services/   # Facade API và assertion service
+│   │   ├── index.ts    # Public exports
+│   │   ├── baseApi.ts  # Re-export tương thích
+│   │   └── baseAssert.ts
+│   ├── fixtures/
+│   │   ├── api.fixtures.ts # Fixture API độc lập, không khởi tạo browser page
+│   │   ├── db.fixtures.ts  # Fixture database
+│   │   └── pom.fixtures.ts # Fixture UI/POM và các action theo ứng dụng
+│   ├── pages/          # Page action và logic UI theo ứng dụng
+│   ├── Helper/         # Logger, Allure, database, Excel/JSON và tiện ích chung
+│   ├── cli.ts          # CLI của framework
+│   └── global-teardown.ts
 ├── tests/              # Playwright specs, nhóm theo tính năng
-├── Helper/             # Logger, Allure, database, Excel/JSON và tiện ích chung
 ├── design-doc/         # Tài liệu thiết kế framework
 ├── design-docs/        # Tài liệu thiết kế các thành phần khác, gồm CLI
 ├── docs/               # Hướng dẫn vận hành và CLI
@@ -76,26 +79,26 @@ npm run test
 
 ### Phân lớp API
 
-- `api/business/`: đóng gói một nghiệp vụ/use-case có thể tái sử dụng, gồm
+- `src/api/business/`: đóng gói một nghiệp vụ/use-case có thể tái sử dụng, gồm
   endpoint, payload và headers phù hợp. Ví dụ: `createPlace`, `loginToClms`.
-- `api/client/`: gửi request, xử lý timeout/retry, body, response và Allure
+- `src/api/client/`: gửi request, xử lý timeout/retry, body, response và Allure
   attachment.
-- `api/services/`: cung cấp facade gọi API và assertion response.
-- `api/models/`: định nghĩa kiểu dữ liệu request, response và quy tắc assertion.
-- `api/index.ts`: điểm import công khai cho service, business action, assertion
+- `src/api/services/`: cung cấp facade gọi API và assertion response.
+- `src/api/models/`: định nghĩa kiểu dữ liệu request, response và quy tắc assertion.
+- `src/api/index.ts`: điểm import công khai cho service, business action, assertion
   và model.
-- `fixtures/api.fixtures.ts`: cung cấp fixture `api` cho API spec.
+- `src/fixtures/api.fixtures.ts`: cung cấp fixture `api` cho API spec.
 
 API spec nên tập trung vào việc gọi business action và kiểm tra kết quả; không
 đưa payload nghiệp vụ hoặc chi tiết HTTP lặp lại vào spec. Các page trong
-`pages/` chỉ xử lý luồng UI, không dùng làm nơi chứa API test.
+`src/pages/` chỉ xử lý luồng UI, không dùng làm nơi chứa API test.
 
 ### Fixture UI và database
 
-- Dùng `fixtures/pom.fixtures.ts` cho kiểm thử UI cần page và action theo ứng
+- Dùng `src/fixtures/pom.fixtures.ts` cho kiểm thử UI cần page và action theo ứng
   dụng như `clms`, `hero`, `orangeHr`.
-- Dùng `fixtures/db.fixtures.ts` khi cần kết nối database trong test.
-- Dùng `fixtures/api.fixtures.ts` cho API spec độc lập để không phụ thuộc vào
+- Dùng `src/fixtures/db.fixtures.ts` khi cần kết nối database trong test.
+- Dùng `src/fixtures/api.fixtures.ts` cho API spec độc lập để không phụ thuộc vào
   browser fixture.
 
 ## Luồng làm việc QA/QC
@@ -144,12 +147,12 @@ project tương ứng đã được bật trong config.
 
 ### Ví dụ API spec
 
-API spec nhận `api` từ fixture, gọi business action trong `api/` và assertion
+API spec nhận `api` từ fixture, gọi business action trong `src/api/` và assertion
 response đã xác định:
 
 ```ts
-import { test } from '../../fixtures/api.fixtures';
-import { assertApiResponse, createPlace } from '../../api';
+import { test } from '../../src/fixtures/api.fixtures';
+import { assertApiResponse, createPlace } from '../../src/api';
 
 test('creates a place successfully', async ({ api }) => {
   const response = await createPlace(api);

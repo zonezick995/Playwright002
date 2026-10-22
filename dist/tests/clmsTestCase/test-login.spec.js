@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const pom_fixtures_1 = require("../../fixtures/pom.fixtures");
-const logger_1 = require("../../Helper/utils/logger");
+const pom_fixtures_1 = require("../../src/fixtures/pom.fixtures");
+const logger_1 = require("../../src/Helper/utils/logger");
 /**
 * TypeScript Idiomatic Test Suite
 * ✅ Functional composition thay vì class hierarchy
@@ -32,9 +32,5 @@ pom_fixtures_1.test.describe('CLMS Login Tests', () => {
     pom_fixtures_1.test.skip('should read excel data', async ({ clms }) => {
         logger_1.Logger.info('TEST', '🧪 Testing Excel helper');
         await clms.testExcel();
-    });
-    pom_fixtures_1.test.skip('should call API', async ({ clms }) => {
-        logger_1.Logger.info('TEST', '🧪 Testing API helper');
-        await clms.testAPI();
     });
 });

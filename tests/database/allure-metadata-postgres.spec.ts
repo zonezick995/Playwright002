@@ -9,7 +9,7 @@ import {
   AllurePostgresRepository,
   AllureResultsParser,
   createAllurePostgresPool,
-} from '../../Helper/Allure';
+} from '../../src/Helper/Allure';
 
 test('persists Allure run metadata and restores it for report generation', async () => {
   const tempRoot = await mkdtemp(path.join(os.tmpdir(), 'allure-postgres-metadata-'));

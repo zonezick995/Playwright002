@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const pom_fixtures_1 = require("../../fixtures/pom.fixtures");
-const logger_1 = require("../../Helper/utils/logger");
+const pom_fixtures_1 = require("../../src/fixtures/pom.fixtures");
+const logger_1 = require("../../src/Helper/utils/logger");
 /**
 * TypeScript Idiomatic Test Suite
 * ✅ Functional composition thay vì class hierarchy

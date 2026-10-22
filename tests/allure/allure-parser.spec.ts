@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test';
 import path from 'node:path';
 
-import { AllureResultsParser } from '../../Helper/Allure';
+import { AllureResultsParser } from '../../src/Helper/Allure';
 
 test('prints parsed Allure values for database inspection', async () => {
   const resultsDir = path.resolve(process.cwd(), 'allure-results');

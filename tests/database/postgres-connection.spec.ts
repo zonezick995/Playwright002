@@ -6,7 +6,7 @@ import {
   AllurePostgresRepository,
   AllureResultsParser,
   createAllurePostgresPool,
-} from '../../Helper/Allure';
+} from '../../src/Helper/Allure';
 
 test('inserts parsed Allure results into PostgreSQL', async () => {
   const resultsDir = path.resolve(process.cwd(), 'allure-results');

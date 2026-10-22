@@ -1,5 +1,5 @@
 import { defineConfig, devices } from '@playwright/test';
-import { Logger, LogLevel } from './Helper/utils/logger';
+import { Logger, LogLevel } from './src/Helper/utils/logger';
 import dotenv from 'dotenv';
 import path from 'path';
 
@@ -31,7 +31,7 @@ const buildUrl =
 
 export default defineConfig({
   // Global setup and teardown
-  globalTeardown: require.resolve('./global-teardown'), // optional, nếu có cần dọn dẹp sau khi chạy xong tất cả tests
+  globalTeardown: require.resolve('./src/global-teardown'),
 
   // Test directory
   testDir: './tests', // thư mục chứa test cases
@@ -77,7 +77,7 @@ export default defineConfig({
         },
       ],
     }],
-    [require.resolve('./Helper/Allure/postgres/allure-postgres-reporter'), {
+    [require.resolve('./src/Helper/Allure/postgres/allure-postgres-reporter'), {
       resultsDir: 'allure-results',
       executor: {
         name: process.env.CI ? 'CI' : 'Local',
@@ -95,11 +95,11 @@ export default defineConfig({
         ...(ciRunAttempt ? { reportName: `Attempt ${ciRunAttempt}` } : {}),
       },
     }],
-    [require.resolve('./Helper/Allure/postgres/test-output-reporter')],
+    [require.resolve('./src/Helper/Allure/postgres/test-output-reporter')],
   ],
   // Shared settings for all projects
   use: {
-    baseURL: process.env.BASE_URL || 'http://localhost:3000', // base URL cho các lệnh page.goto() và APIHelper
+    baseURL: process.env.BASE_URL || 'http://localhost:3000',
     trace: 'on-first-retry', // ghi lại trace chỉ khi test thất bại và được retry
     headless: process.env.PLAYWRIGHT_HEADLESS !== 'false', // mặc định chạy headless, chỉ chạy headed nếu explicitly set PLAYWRIGHT_HEADLESS=false
     screenshot: 'only-on-failure', // chụp screenshot chỉ khi test thất bại

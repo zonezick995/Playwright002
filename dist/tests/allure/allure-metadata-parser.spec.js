@@ -7,7 +7,7 @@ const test_1 = require("@playwright/test");
 const promises_1 = require("node:fs/promises");
 const node_os_1 = __importDefault(require("node:os"));
 const node_path_1 = __importDefault(require("node:path"));
-const Allure_1 = require("../../Helper/Allure");
+const Allure_1 = require("../../src/Helper/Allure");
 (0, test_1.test)('parses Allure environment, categories, executor, and history artifacts', async () => {
     const resultsDir = await (0, promises_1.mkdtemp)(node_path_1.default.join(node_os_1.default.tmpdir(), 'allure-metadata-'));
     try {
