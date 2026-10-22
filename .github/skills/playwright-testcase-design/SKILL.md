@@ -1,40 +1,50 @@
 ---
 name: playwright-testcase-design
-description: "Design and present reviewable UI or API test cases only. Use when asked to create, draft, plan, or review test cases; do not implement specs, access websites, send API requests, or run tests."
-argument-hint: "Feature, URL, API endpoint, requirements, or test scenario"
+description: "Chỉ dùng để thiết kế, soạn hoặc rà soát test case UI/API bằng Playwright. Không triển khai spec, truy cập website, gửi API request hay chạy kiểm thử."
+argument-hint: "Tính năng, URL, API endpoint, yêu cầu hoặc kịch bản cần kiểm thử"
 ---
 
-# Playwright Test Case Design
+# Thiết kế test case cho Playwright
 
-This skill is strictly for creating a reviewable test-case proposal in the conversation. It does not implement or execute tests.
+Skill này chỉ tạo đề xuất test case để người dùng xem xét trong hội thoại. Không triển khai hoặc thực thi kiểm thử.
 
-## Scope
+## 1. Phạm vi công việc
 
-- Produce clear, atomic test cases for UI and/or API behavior from the user's requirements, supplied URLs, cURL/Postman requests, and repository context already available.
-- Do not create or modify test specs, page objects, API helpers, fixtures, test data files, or other project files.
-- Do not open or interact with a browser, use Playwright MCP, send HTTP/API requests, or run any test/build command.
-- Do not treat invoking this skill or accepting its proposal as authorization to execute tests. A separate user request and approval workflow is required for implementation or execution.
+Có thể:
 
-## Workflow
+- Soạn test case UI và/hoặc API rõ ràng, độc lập dựa trên yêu cầu, URL, request cURL/Postman hoặc ngữ cảnh repository đã có.
+- Nêu rõ giả định, điều kiện trước, dữ liệu, kết quả mong đợi và tác động phụ để người dùng duyệt.
 
-1. Identify the requested feature, UI/API type, endpoint or page (if supplied), environment (if known), and expected behavior. If a material design choice is unclear, offer practical options, recommend one when appropriate, and ask one focused question before finalizing the proposal.
-2. Use only information provided by the user or existing repository context. Do not access the live target to fill gaps.
-3. Draft concise, atomic cases. Include relevant positive, negative, validation, boundary, and duplicate/idempotency cases only when supported by the requirements and safe to specify.
-4. Mark unknown preconditions, response contracts, status codes, data cleanup, and environment assumptions as **TBD**; do not invent them as facts.
-5. Present the proposal using this format:
+Không được:
 
-| ID | Type | Scenario / objective | Preconditions and test data | Steps | Expected result | Environment / side effects |
+- Tạo hoặc sửa test spec, page object, API helper, fixture, tệp dữ liệu kiểm thử hay tệp dự án khác.
+- Mở hoặc thao tác trình duyệt, dùng Playwright MCP, gửi HTTP/API request hoặc chạy lệnh test/build.
+- Xem việc gọi skill hoặc duyệt đề xuất là sự cho phép chạy kiểm thử. Việc triển khai hay thực thi cần yêu cầu riêng và quy trình xác nhận phù hợp.
+
+## 2. Thu thập thông tin và xử lý điểm chưa rõ
+
+1. Xác định tính năng, loại kiểm thử (UI/API), endpoint hoặc trang nếu được cung cấp, môi trường nếu đã biết và hành vi mong đợi.
+2. Chỉ sử dụng thông tin người dùng cung cấp hoặc ngữ cảnh repository hiện có. Không truy cập hệ thống thật để tìm phần còn thiếu.
+3. Nếu có quyết định quan trọng chưa rõ, nêu phương án thực tế, đề xuất khi hữu ích và hỏi một câu hỏi cụ thể trước khi hoàn thiện đề xuất.
+4. Nếu chưa biết điều kiện trước, contract response, status code, dọn dẹp dữ liệu hoặc môi trường, đánh dấu **TBD**; không tự đặt giả định thành sự thật.
+
+## 3. Xây dựng test case
+
+- Mỗi test case tập trung vào một mục tiêu và có điều kiện đạt có thể quan sát.
+- Chỉ thêm trường hợp thành công, lỗi, kiểm tra dữ liệu, biên, trùng lặp hoặc idempotency khi có căn cứ từ yêu cầu và an toàn để đề xuất.
+- Nêu dependency giữa các test case và mọi tác động phụ một cách tường minh.
+- Tránh test case trùng nhau, giả định không có căn cứ hoặc selector gắn với cách triển khai nội bộ.
+- Với UI, mô tả trạng thái bắt đầu, tương tác của người dùng và kết quả quan sát được.
+- Với API, khi biết thì nêu method, endpoint, request header, dạng payload, status mong đợi và các trường response chính. Che thông tin bí mật và dữ liệu cá nhân.
+
+## 4. Trình bày và dừng
+
+Trình bày đề xuất theo bảng sau:
+
+| ID | Loại | Kịch bản / mục tiêu | Điều kiện trước và dữ liệu | Các bước | Kết quả mong đợi | Môi trường / tác động phụ |
 |---|---|---|---|---|---|---|
-| TC-01 | UI / API | One behavior to verify | Setup and data; redact secrets | Concise ordered actions | Observable UI state or response contract | Local / test / staging / production / TBD; note writes |
+| TC-01 | UI / API | Một hành vi cần xác minh | Thiết lập và dữ liệu; che thông tin bí mật | Các thao tác ngắn gọn theo thứ tự | Trạng thái UI hoặc response contract quan sát được | Local / test / staging / production / TBD; ghi rõ thao tác ghi dữ liệu |
 
-6. For API cases, include method, endpoint, request headers, payload shape, expected status, and key response fields when known. Redact secrets and personal data.
-7. For UI cases, define the starting state, user interaction, and observable result; avoid prescribing implementation-specific selectors.
-8. End by stating that only test-case design was performed and no website/API was accessed and no test was implemented or run. Stop there.
-
-## Output quality
-
-- Keep wording understandable to reviewers who are not automation developers.
-- Give each case one objective and an observable pass condition.
-- State dependencies between cases and side effects explicitly.
-- Avoid duplicate cases and unsupported assumptions.
-- If essential details are missing, mark them **TBD** in the proposal and ask the user to choose from reasonable options where possible; never fill gaps with an unapproved assumption.
+- Chỉ hỏi người dùng chọn phương án khi thiếu thông tin thiết yếu; ưu tiên lựa chọn rõ ràng thay vì tự suy đoán.
+- Kết thúc bằng việc nói rõ rằng chỉ thiết kế test case đã được thực hiện: không truy cập website/API, không triển khai test và không chạy kiểm thử.
+- Sau đó dừng.

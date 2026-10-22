@@ -1,40 +1,40 @@
-# Playwright Automation Guidelines
+# Hướng dẫn Copilot cho repository Playwright
 
-## Decision-making
+## Quy tắc chung
 
-- When a request requires choosing between materially different approaches, scope, behavior, test data, environments, or side effects, do not silently choose on the user's behalf. Briefly explain the decision, offer practical options, recommend one when appropriate, and ask the user which they prefer before proceeding.
-- If a necessary detail is unclear, ask one focused question at a time and include reasonable suggestions. Do not ask about routine implementation details already determined by the request or established project patterns.
-- Proceed without asking only when the user has already specified the choice, explicitly delegated the decision, or the choice is a low-impact implementation detail with a clear repository convention.
+- Tổ chức các kịch bản tự động trong `tests/`, nhóm theo tính năng.
+- Tái sử dụng fixture trong `fixtures/`, page action trong `pages/` và API helper/assertion trong `Helper/` hoặc `api/` khi phù hợp; không tạo tiện ích trùng lặp.
+- Tuân theo quy ước TypeScript và Playwright Test hiện có.
+- Mỗi test cần độc lập, tập trung vào hành vi cụ thể và xác minh kết quả quan sát được. Ưu tiên điều kiện chờ rõ ràng thay vì thời gian chờ cố định.
 
-## Project Structure
+## Thiết kế, phê duyệt và thực thi kiểm thử
 
-- Add automated scenarios under `tests/`, grouped by feature.
-- Reuse the existing fixtures in `fixtures/` and page actions in `pages/`.
-- Reuse API helpers and assertions in `Helper/` or `api/` when appropriate; do not create duplicate request or assertion utilities.
-- Follow the repository's TypeScript and Playwright Test patterns.
-- Whenever a change introduces or materially changes the framework structure or architecture (for example, a new shared layer, module boundary, execution flow, fixture system, or reporting integration), create or update a detailed Markdown design document in `design-doc/` as part of the same change.
-- The design document should explain the problem and goals, proposed architecture and component responsibilities, interactions/data flow, affected files, configuration, error handling, key decisions and trade-offs, and validation strategy. Use a descriptive kebab-case filename; update a relevant existing document instead of creating a duplicate when appropriate.
-- Write design documents in `design-doc/` in Vietnamese. Keep English only for established technical terms, product/library names, identifiers, code, and terms whose translation would reduce clarity.
-- Do not require a design document for isolated test cases, routine bug fixes, or local refactors that do not change framework structure. If it is unclear whether a change is architectural, ask the user before deciding.
+- Trước khi triển khai hoặc chạy một kiểm thử được yêu cầu, hãy trình bày bảng test case ngắn gọn để người dùng xác nhận. Chưa xác nhận thì không sửa spec, gửi request hoặc thao tác hệ thống đích.
+- Nếu người dùng không xác nhận hoặc chỉ muốn thiết kế test case, dừng ở phần đề xuất; không triển khai hay thực thi.
+- Khi người dùng gọi `/playwright-testcase-design` hoặc chỉ yêu cầu thiết kế/soạn test case, dùng [skill thiết kế test case](./skills/playwright-testcase-design/SKILL.md). Đây là quy trình chỉ thiết kế: không triển khai spec và không truy cập hệ thống đích.
+- Với kiểm thử hồi quy UI/API có thể lặp lại, dùng Playwright Test spec và chạy lệnh hẹp nhất liên quan.
+- Khi người dùng yêu cầu kiểm tra website trực tiếp theo kiểu khám phá, dùng trình duyệt Playwright MCP. Tương tác bằng MCP không tương đương với chạy spec trong repository.
+- Dùng API facility của Playwright Test hoặc API helper hiện có để assertion tự động cho API. Không khẳng định thao tác trình duyệt MCP đã chạy API test spec.
+- Việc duyệt kế hoạch test không tự động cho phép mua hàng, thanh toán, tạo tài khoản, xóa dữ liệu hoặc hành động có hậu quả đáng kể trên hệ thống thật; phải có ủy quyền riêng.
 
-## UI and API Automation
+## An toàn dữ liệu và tác động
 
-- Before implementing or running any requested test, first design a concise, reviewable test-case table and ask the user to confirm it. Do not create or modify test specs, send test requests, or interact with the target system until the user explicitly approves the proposed cases.
-- If the user does not confirm, or asks only for test design, stop after presenting the cases; skip implementation and execution.
-- When the user invokes `/playwright-testcase-design` or asks only to design/create test cases, use [the test-case design skill](./skills/playwright-testcase-design/SKILL.md). That skill is design-only: do not implement automation or access the target system.
-- For repeatable UI or API regression coverage, implement Playwright Test specs and run the narrowest relevant test command.
-- Use the Playwright MCP browser for live, exploratory UI checks when the user asks to test a website directly. MCP browser actions are not equivalent to running a repository test spec.
-- Use Playwright Test API facilities or the repository's API helper for automated API assertions. Do not claim that MCP browser interaction executed an API test spec.
-- Assert observable outcomes, not just that an action completed. Keep tests isolated and avoid fixed sleeps when an explicit condition can be awaited.
-- Do not perform purchases, payments, account creation, destructive changes, or other consequential actions on live systems without explicit user authorization.
-- Approval of a test-case plan does not by itself authorize consequential live-system actions; obtain separate explicit authorization when needed.
-- Keep credentials and tokens out of source files, reports, and chat output. Use configured environment variables and redact sensitive values.
+- Giữ test độc lập và tránh làm thay đổi trạng thái dùng chung ngoài phạm vi được duyệt.
+- Không đưa credential, token, cookie hoặc thông tin nhạy cảm vào mã nguồn, log, ảnh chụp hay báo cáo. Dùng biến môi trường đã cấu hình và che dữ liệu cần thiết.
+- Chỉ dọn dẹp tài nguyên do test tạo khi việc dọn dẹp an toàn và được hỗ trợ.
 
-## Validation
+## Báo cáo và tài liệu thiết kế
 
-- Run the smallest relevant Playwright test command after changing automation code.
-- For Playwright Test runs, use the configured Allure reporter as the primary detailed report; report the exact test command and Allure result/report location.
-- For live exploratory MCP checks, provide a concise result summary in chat. Do not imply MCP activity is recorded in Allure unless it was explicitly captured by a Playwright Test run.
-- Report pass/fail/blocked results and relevant limitations. Never present an exploratory MCP check as a passing automated test run.
-- See [Playwright automation instructions](./instructions/playwright-tests.instructions.md) and the [Playwright MCP QA skill](./skills/playwright-mcp-qa/SKILL.md) for detailed procedures.
-- For test-case design only, see [Playwright Test Case Design](./skills/playwright-testcase-design/SKILL.md).
+- Sau khi thay đổi mã kiểm thử, chạy test Playwright nhỏ nhất có liên quan.
+- Với lần chạy Playwright Test, dùng Allure đã cấu hình làm báo cáo chi tiết; ghi lệnh chạy và vị trí kết quả/báo cáo.
+- Với kiểm tra khám phá bằng MCP, tóm tắt kết quả trong chat. Không nói rằng hoạt động MCP được ghi vào Allure nếu không có lần chạy Playwright Test tương ứng.
+- Nêu trạng thái **Pass**, **Fail** hoặc **Blocked** cùng giới hạn liên quan. Không trình bày kiểm tra khám phá như một lần chạy test tự động thành công.
+- Nếu thay đổi làm thay đổi đáng kể cấu trúc hoặc kiến trúc framework (ví dụ: shared layer, module boundary, execution flow, fixture system hoặc reporting integration), hãy tạo hoặc cập nhật tài liệu thiết kế chi tiết trong `design-doc/` trong cùng thay đổi. Viết tài liệu bằng tiếng Việt; chỉ giữ tiếng Anh cho technical term, tên thư viện, identifier, code hoặc thuật ngữ dịch sang tiếng Việt sẽ kém rõ ràng.
+- Tài liệu thiết kế cần nêu vấn đề và mục tiêu, kiến trúc, trách nhiệm thành phần, luồng tương tác/dữ liệu, tệp bị ảnh hưởng, cấu hình, xử lý lỗi, quyết định và đánh đổi, cùng cách xác thực.
+- Không cần tài liệu thiết kế cho test case riêng lẻ, sửa lỗi thông thường hoặc refactor cục bộ không làm thay đổi cấu trúc framework. Nếu chưa rõ thay đổi có mang tính kiến trúc hay không, hỏi người dùng trước.
+
+## Tài liệu Playwright liên quan
+
+- Khi tạo, cập nhật hoặc rà soát test spec, page action, API helper hay assertion, tham khảo [instruction kiểm thử Playwright](./instructions/playwright-tests.instructions.md).
+- Khi kiểm tra khám phá website bằng Playwright MCP hoặc thực hiện quy trình QA UI/API, dùng [skill Playwright MCP QA](./skills/playwright-mcp-qa/SKILL.md).
+- Khi chỉ thiết kế test case, dùng [skill thiết kế test case](./skills/playwright-testcase-design/SKILL.md).
