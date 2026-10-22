@@ -9,7 +9,7 @@
 
 ## Thiết kế, phê duyệt và thực thi kiểm thử
 
-- Khi cần phân tích requirement trước khi thiết kế kiểm thử, dùng [skill phân tích requirement QA/QC](./skills/qa-requirement-analysis/SKILL.md). Skill này tạo tài liệu Markdown trong `docs/qa/requirements/` để tái sử dụng ở các bước sau.
+- Khi cần phân tích requirement trước khi thiết kế kiểm thử, dùng [skill phân tích requirement QA/QC](./skills/qa-requirement-analysis/SKILL.md). Skill này tạo tài liệu Markdown trong `design-docs/qa-requirements/` để tái sử dụng ở các bước sau.
 - Trước khi triển khai hoặc chạy một kiểm thử được yêu cầu, hãy trình bày bảng test case ngắn gọn để người dùng xác nhận. Chưa xác nhận thì không sửa spec, gửi request hoặc thao tác hệ thống đích.
 - Nếu người dùng không xác nhận hoặc chỉ muốn thiết kế test case, dừng ở phần đề xuất; không triển khai hay thực thi.
 - Khi người dùng gọi `/playwright-testcase-design` hoặc chỉ yêu cầu thiết kế/soạn test case, dùng [skill thiết kế test case](./skills/playwright-testcase-design/SKILL.md). Nếu có tài liệu phân tích requirement, dùng tài liệu đó làm nguồn và duy trì truy vết bằng mã requirement. Đây là quy trình chỉ thiết kế: không triển khai spec và không truy cập hệ thống đích.
@@ -31,7 +31,7 @@
 - Với lần chạy Playwright Test, dùng Allure đã cấu hình làm báo cáo chi tiết; ghi lệnh chạy và vị trí kết quả/báo cáo.
 - Với kiểm tra khám phá bằng MCP, tóm tắt kết quả trong chat. Không nói rằng hoạt động MCP được ghi vào Allure nếu không có lần chạy Playwright Test tương ứng.
 - Nêu trạng thái **Pass**, **Fail** hoặc **Blocked** cùng giới hạn liên quan. Không trình bày kiểm tra khám phá như một lần chạy test tự động thành công.
-- Nếu thay đổi làm thay đổi đáng kể cấu trúc hoặc kiến trúc framework (ví dụ: shared layer, module boundary, execution flow, fixture system hoặc reporting integration), hãy tạo hoặc cập nhật tài liệu thiết kế chi tiết trong `design-doc/` trong cùng thay đổi. Viết tài liệu bằng tiếng Việt; chỉ giữ tiếng Anh cho technical term, tên thư viện, identifier, code hoặc thuật ngữ dịch sang tiếng Việt sẽ kém rõ ràng.
+- Nếu thay đổi làm thay đổi đáng kể cấu trúc hoặc kiến trúc framework (ví dụ: shared layer, module boundary, execution flow, fixture system hoặc reporting integration), hãy tạo hoặc cập nhật tài liệu thiết kế chi tiết trong `design-docs/` trong cùng thay đổi. Viết tài liệu bằng tiếng Việt; chỉ giữ tiếng Anh cho technical term, tên thư viện, identifier, code hoặc thuật ngữ dịch sang tiếng Việt sẽ kém rõ ràng.
 - Tài liệu thiết kế cần nêu vấn đề và mục tiêu, kiến trúc, trách nhiệm thành phần, luồng tương tác/dữ liệu, tệp bị ảnh hưởng, cấu hình, xử lý lỗi, quyết định và đánh đổi, cùng cách xác thực.
 - Không cần tài liệu thiết kế cho test case riêng lẻ, sửa lỗi thông thường hoặc refactor cục bộ không làm thay đổi cấu trúc framework. Nếu chưa rõ thay đổi có mang tính kiến trúc hay không, hỏi người dùng trước.
 

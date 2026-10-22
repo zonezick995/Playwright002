@@ -37,7 +37,7 @@ Skill này chuyển requirement đầu vào thành một tài liệu phân tích
 
 ## Cấu trúc và nơi lưu kết quả
 
-- Mặc định lưu tại `docs/qa/requirements/<feature-slug>-requirement-analysis.md`.
+- Mặc định lưu tại `design-docs/qa-requirements/<feature-slug>-requirement-analysis.md`.
 - Dùng tên tính năng/ticket dạng kebab-case, ví dụ `account-lockout-requirement-analysis.md`. Nếu người dùng chỉ định đường dẫn khác thì dùng đường dẫn đó.
 - Nếu thư mục chưa tồn tại, tạo thư mục cần thiết; không ghi đè tài liệu đã có nếu chưa kiểm tra nội dung. Khi tài liệu cùng tên đã tồn tại, cập nhật tài liệu đó nếu thuộc cùng requirement; nếu không chắc, hỏi người dùng hoặc dùng hậu tố phân biệt.
 - Viết tài liệu bằng tiếng Việt; giữ nguyên tên sản phẩm, identifier, mã requirement, API/path và technical term tiếng Anh khi cần để tránh sai nghĩa.

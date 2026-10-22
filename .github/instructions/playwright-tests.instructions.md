@@ -40,7 +40,7 @@ applyTo:
 - Đặt assertion trong spec hoặc shared assertion helper đã có. Tránh tạo trùng lặp cho fixture setup, page action, API request wrapper hoặc assertion utility.
 - Giữ các test độc lập: không phụ thuộc thứ tự chạy hoặc trạng thái do test khác để lại.
 - Ưu tiên chờ theo điều kiện và cơ chế auto-waiting của Playwright thay vì timeout cố định.
-- Nếu thay đổi làm phát sinh hoặc điều chỉnh đáng kể kiến trúc framework (ví dụ: test infrastructure dùng chung, fixture, lớp helper, luồng chạy hoặc tích hợp báo cáo), hãy tạo hoặc cập nhật tài liệu thiết kế chi tiết trong `design-doc/` cùng thay đổi. Tài liệu cần nêu mục tiêu, kiến trúc, trách nhiệm thành phần, luồng dữ liệu/điều khiển, tệp bị ảnh hưởng, cấu hình, xử lý lỗi, đánh đổi và cách xác thực.
+- Nếu thay đổi làm phát sinh hoặc điều chỉnh đáng kể kiến trúc framework (ví dụ: test infrastructure dùng chung, fixture, lớp helper, luồng chạy hoặc tích hợp báo cáo), hãy tạo hoặc cập nhật tài liệu thiết kế chi tiết trong `design-docs/` cùng thay đổi. Tài liệu cần nêu mục tiêu, kiến trúc, trách nhiệm thành phần, luồng dữ liệu/điều khiển, tệp bị ảnh hưởng, cấu hình, xử lý lỗi, đánh đổi và cách xác thực.
 - Không cần tài liệu thiết kế cho việc thêm test/spec riêng lẻ, sửa lỗi thông thường hoặc refactor cục bộ không làm thay đổi cấu trúc framework.
 
 ## 3. Viết kiểm thử UI

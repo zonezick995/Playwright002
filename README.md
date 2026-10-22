@@ -70,9 +70,14 @@ npm run test
 │   ├── cli.ts          # CLI của framework
 │   └── global-teardown.ts
 ├── tests/              # Playwright specs, nhóm theo tính năng
-├── design-doc/         # Tài liệu thiết kế framework
-├── design-docs/        # Tài liệu thiết kế các thành phần khác, gồm CLI
-├── docs/               # Hướng dẫn vận hành và CLI
+├── design-docs/        # Tài liệu thiết kế, hướng dẫn và phân tích requirement
+│   ├── qa-requirements/
+│   ├── allure-parser.md
+│   ├── allure-postgres-report.md
+│   ├── api-client-services-model.md
+│   ├── dependencies.md
+│   ├── framework-cli-design.md
+│   └── framework-cli.md
 ├── playwright.config.ts
 └── package.json
 ```
@@ -109,7 +114,7 @@ qua các bước:
 1. **Phân tích requirement:** dùng `qa-requirement-analysis` để chuẩn hóa mục
    tiêu, quy tắc nghiệp vụ, acceptance criteria, câu hỏi, giả định và rủi ro.
    Tài liệu Markdown mặc định được lưu tại
-   `docs/qa/requirements/<feature-slug>-requirement-analysis.md`.
+   `design-docs/qa-requirements/<feature-slug>-requirement-analysis.md`.
 2. **Thiết kế test case:** dùng `playwright-testcase-design` để tạo test case
    UI/API, giữ liên kết tới mã requirement và trình bày để người dùng duyệt.
    Skill này chỉ thiết kế, không truy cập hệ thống, viết spec hoặc chạy test.
@@ -229,9 +234,9 @@ npm run framework -- report
 npm run framework -- report --run-id 15 --output ./artifacts/reports
 ```
 
-Hướng dẫn đầy đủ về CLI, PostgreSQL và Docker: [docs/framework-cli.md](./docs/framework-cli.md).
+Hướng dẫn đầy đủ về CLI, PostgreSQL và Docker: [design-docs/framework-cli.md](./design-docs/framework-cli.md).
 Tài liệu thiết kế CLI: [design-docs/framework-cli-design.md](./design-docs/framework-cli-design.md).
-Thiết kế phân lớp API: [design-doc/api-client-services-model.md](./design-doc/api-client-services-model.md).
+Thiết kế phân lớp API: [design-docs/api-client-services-model.md](./design-docs/api-client-services-model.md).
 
 ## Tài liệu liên quan
 
