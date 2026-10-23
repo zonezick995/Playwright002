@@ -14,6 +14,7 @@
 - Nếu người dùng không xác nhận hoặc chỉ muốn thiết kế test case, dừng ở phần đề xuất; không triển khai hay thực thi.
 - Khi người dùng gọi `/playwright-testcase-design` hoặc chỉ yêu cầu thiết kế/soạn test case, dùng [skill thiết kế test case](./skills/playwright-testcase-design/SKILL.md). Nếu có tài liệu phân tích requirement, dùng tài liệu đó làm nguồn và duy trì truy vết bằng mã requirement. Đây là quy trình chỉ thiết kế: không triển khai spec và không truy cập hệ thống đích.
 - Khi người dùng yêu cầu chuyển test case đã duyệt thành code tự động hóa UI/API, dùng [skill triển khai test case](./skills/playwright-testcase-implementation/SKILL.md). Tái sử dụng fixture/page/API helper hiện có và tuân thủ bước duyệt test case trước khi sửa hoặc chạy spec.
+- Khi người dùng yêu cầu kiểm thử database (kết nối, truy vấn, schema hoặc persistence), dùng [skill kiểm thử database](./skills/database-testing/SKILL.md). Xác định driver/môi trường, trình bày case để duyệt trước khi kết nối hoặc chạy test, và dùng fixture/helper database hiện có.
 - Với kiểm thử hồi quy UI/API có thể lặp lại, dùng Playwright Test spec và chạy lệnh hẹp nhất liên quan.
 - Khi người dùng yêu cầu kiểm tra website trực tiếp theo kiểu khám phá, dùng trình duyệt Playwright MCP. Tương tác bằng MCP không tương đương với chạy spec trong repository.
 - Dùng API facility của Playwright Test hoặc API helper hiện có để assertion tự động cho API. Không khẳng định thao tác trình duyệt MCP đã chạy API test spec.
@@ -41,3 +42,4 @@
 - Khi kiểm tra khám phá website bằng Playwright MCP hoặc thực hiện quy trình QA UI/API, dùng [skill Playwright MCP QA](./skills/playwright-mcp-qa/SKILL.md).
 - Khi chỉ thiết kế test case, dùng [skill thiết kế test case](./skills/playwright-testcase-design/SKILL.md).
 - Khi triển khai test case đã duyệt thành Playwright Test code, dùng [skill triển khai test case](./skills/playwright-testcase-implementation/SKILL.md).
+- Khi thiết kế, triển khai hoặc chạy kiểm thử database, dùng [skill kiểm thử database](./skills/database-testing/SKILL.md).
